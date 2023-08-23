@@ -1,0 +1,55 @@
+// interface userTypes {
+//     id: string;
+//     firstName: string;
+//     lastName: string;
+//     email_addresses: { email_address: string }[];
+//     image_url: string;
+//   }
+
+// const [users, setUsers] = useState([]);
+//   const [isloading, setIsloading] = useState(false);
+
+//   useEffect(() => {
+//     setIsloading(true);
+//     const fetchAllUsers = async () => {
+//       try {
+//         const res = await fetch("https://api.clerk.com/v1/users", {
+//           headers: {
+//             Authorization: `bearer ${
+//               import.meta.env.VITE_REACT_APP_CLERK_SECRET_KEY
+//             }`,
+//           },
+//         });
+//         console.log("res: ", res);
+
+//         const result = await res.json();
+
+//         if (!res.ok) return;
+
+//         console.log("result", result);
+
+//         const usersData = result.map((user: userTypes) => {
+//           return {
+//             id: user?.id,
+//             fullName: `${user?.firstName} ${user?.lastName}`,
+//             email: user?.email_addresses[0].email_address,
+//             img: user?.image_url,
+//           };
+//         });
+
+//         console.log("usersData", usersData);
+
+//         setUsers(usersData);
+//       } catch (error) {
+//         console.log(error);
+//       } finally {
+//         setIsloading(false);
+//       }
+//     };
+
+//     fetchAllUsers();
+//   }, []);
+
+//   console.log(users);
+
+//   if (isloading) return null;
