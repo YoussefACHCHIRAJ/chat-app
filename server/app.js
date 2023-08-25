@@ -18,8 +18,6 @@ const DB_URI = process.env.DB_URI;
 const PORT = 8080;
 
 
-
-
 mongoose.connect(DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(res => {
         console.log('server running');
@@ -43,9 +41,11 @@ io.on('connection', socket => {
         const whoseInChat = io.sockets.adapter.rooms;
         console.log("whose in chat:", whoseInChat);
     });
-    socket.on('send-message', messageData => {
-        console.log('message:', messageData);
-        socket.to(messageData.chatId).emit('receive-message', messageData)
+    socket.on('send-message', async newMessage => {
+        socket.to(newMessage.chatId).emit('receive-message', newMessage);
+        // send messages to db
+        const newSavedMessage = new Message(newMessage);
+        await newSavedMessage.save();
     })
     socket.on('disconnect', () => {
     });

@@ -4,6 +4,7 @@ import Message from "./message";
 import Option from "./option";
 import SendBox from "./send-box";
 import UserChat from "./user-chat";
+import UserListSkeleton from "./user-list-skeleton";
 
 export {
     CurrentUserChat,
@@ -12,4 +13,5 @@ export {
     Option,
     SendBox,
     UserChat,
+    UserListSkeleton
 }

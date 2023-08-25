@@ -11,7 +11,7 @@ import { options } from "@/constants";
 const Options = () => {
   return (
       <Popover>
-        <PopoverTrigger><MoreVertical /></PopoverTrigger>
+        <PopoverTrigger><MoreVertical  className="text-white"/></PopoverTrigger>
         <PopoverContent>
             <div className="space-y-4">
                 {options.map(option => (<Option key={option.label} option={option}/>))}

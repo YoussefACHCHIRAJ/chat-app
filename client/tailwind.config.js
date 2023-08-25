@@ -53,11 +53,26 @@ module.exports = {
         blueCiel: "#E3F6FC",
         darkBlue: "#6588DE",
         headText:"#52585D",
-        lightText: "#96A9BA",
-        green: "#46D362",
         red: "#FD2828",
         orange: "#F3BA4A",
-        lightGray: "#cfdaf5"
+        lightGray: "#cfdaf5",
+        
+        black: "#0a0408",
+        primary: "#151A28",
+        secondary: "#1A202F",
+        lightText: "#96A9BA",
+        green: "#46D362",
+        messageTo: "var(--messageTo)",
+        
+        RcMsgBg1: "#FF9D5D",
+        RcMsgBg2: "#FF7B5B",
+        RcMsgBg3: "#FF5158",
+        msgBg: "#bc304a",
+        SnMsgBg1: "#F9305B",
+        SnMsgBg2: "#C52B8C",
+        SnMsgBg3: "#8925C5",
+
+        darkBrown: "#5b0712",
       },
       borderRadius: {
         lg: "var(--radius)",

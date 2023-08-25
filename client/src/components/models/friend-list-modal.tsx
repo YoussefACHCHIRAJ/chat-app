@@ -14,14 +14,16 @@ interface FriendModalProps {
   isOpen: boolean;
   selectReceiver: (user: userType) => void;
   receiverId: string | undefined;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  unReadMessage:  Map<string, number>
 }
 
 const FriendListModal = ({
   isOpen,
   selectReceiver,
   receiverId,
-  setIsOpen
+  setIsOpen,
+  unReadMessage
 }: FriendModalProps) => {
   const { user } = useClerk();
   const { users, isLoading, errors } = useGetUsers(user?.id as string);
@@ -32,24 +34,26 @@ const FriendListModal = ({
   }
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)}>
-      <DialogContent>
+      <DialogContent  className='bg-primary text-white'>
         <DialogHeader>
-          <DialogTitle>invite to join a chat</DialogTitle>
-          <DialogDescription>
+          <DialogTitle>Friends :</DialogTitle>
+          <DialogDescription className="space-y-2">
             {users?.length > 0 && !errors ? (
               users?.map((user) => (
-                <UserChat
+                  <UserChat
                   key={user.id}
                   user={user}
                   onClick={selectReceiver}
                   receiverId={receiverId}
+                  unReadMessage={unReadMessage}
+                  closeModal={setIsOpen}
                 />
               ))
             ) : (
               <div className="mx-auto text-center first-letter:capitalize mt-5">
                 there is no users.
               </div>
-            )}
+             )}
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

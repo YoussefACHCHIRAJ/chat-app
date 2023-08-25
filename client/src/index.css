@@ -33,6 +33,8 @@
     --ring: 222.2 84% 4.9%;
  
     --radius: 0.5rem;
+
+    --messageTo: linear-gradient(to right, #f31d1e, #960923);
   }
  
   .dark {
@@ -76,6 +78,22 @@
 }
 
 body{
-  background: linear-gradient(to right, #FFFFFF, #F2F6F7);
+  background-image: linear-gradient(80deg,#444254, #1A202F);
 }
 
+.scrollbar::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #151A28; /* Color of the scrollbar thumb */
+  border-radius: 4px; /* Rounded corners for the thumb */
+}
+
+.message-sender{
+  background-image: linear-gradient(45deg, #FF5158 7%, #FF9D5D, #FF7B5B   90%);
+}
+
+.message-receiver{
+  background-image: linear-gradient(45deg, #F9305B 7%, #C52B8C, #8925C5 90%);
+}

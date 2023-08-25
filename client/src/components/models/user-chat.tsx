@@ -1,23 +1,26 @@
 import { cn } from "@/lib/utils";
 import { userType } from "@/types";
-import { Mail } from "lucide-react";
 
 interface userChatType {
   user: userType;
   onClick: (user: userType) => void;
   receiverId: string | undefined;
-  unReadMessage: {sender:string, isUnread:boolean};
+  unReadMessage:  Map<string, number>
+  closeModal?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const UserChat = ({ user, onClick, receiverId, unReadMessage }: userChatType) => {
-  const isUnread = unReadMessage.isUnread && unReadMessage.sender === user.id;
+const UserChat = ({ user, onClick, receiverId, unReadMessage, closeModal }: userChatType) => {
+  const isUnread = unReadMessage.has(user?.id);
+  const handleClick = () => {
+    onClick(user); 
+    closeModal && closeModal(false);
+  }
   return (
     <div
-      onClick={() => onClick(user)}
+      onClick={handleClick}
       className={cn(
-        `flex md:gap-2 md:px-3 px-1 py-1 mx-[.1em] md:mx-0 rounded-xl text-sm items-center justify-start cursor-pointer ${
-          receiverId === user.id ? "bg-darkBlue" : isUnread ? 'bg-lightGray' : ''
-        }`
+        `flex gap-2 md:px-3 px-2 py-3 mx-[.1em] md:mx-0 rounded-xl text-sm items-center justify-start cursor-pointer ${
+          receiverId === user.id ? "bg-gradient-to-r from-msgBg to-SnMsgBg2" : 'bg-secondary'} ${isUnread ? 'bg-[#444254]' : ''}`
       )}
     >
       <div className="border rounded-full md:w-12 w-8 md:h-12 h-8 bg-black">
@@ -30,15 +33,15 @@ const UserChat = ({ user, onClick, receiverId, unReadMessage }: userChatType) =>
       <div className="flex-1">
         <h3
           className={cn(
-            ` capitalize ${
-              receiverId === user.id ? "text-white font-text-lg" : isUnread ? 'font-extrabold text-lg' : "text-headText font-semibold"
+            ` capitalize text-white ${
+              receiverId === user.id ? "font-bold text-lg" : isUnread ? 'font-extrabold text-lg' : " font-semibold"
             }`
           )}
         >
           {user.fullName}
         </h3>
       </div>
-      {isUnread && <Mail className='text-green font-extrabold' width={30} />}
+      {isUnread && <p className='bg-green text-white font-bold rounded-full text-center w-5 h-5'>{unReadMessage.get(user?.id)}</p>}
     </div>
   );
 };

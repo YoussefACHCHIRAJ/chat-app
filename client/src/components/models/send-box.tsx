@@ -44,7 +44,7 @@ const SendBox = ({ setMessages, chatId, receiver}: sendBoxProps) => {
   
   
   return (
-    <div className="px-3 mb-4">
+    <div className="px-3 py-4 bg-primary">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -56,16 +56,16 @@ const SendBox = ({ setMessages, chatId, receiver}: sendBoxProps) => {
             render={({ field }) => (
               <FormItem className="flex-1">
                 <FormControl>
-                  <Input placeholder="Write a message here..." {...field} />
+                  <Input placeholder="Write a message here..." className="bg-black border-0 md:p-4 text-white md:h-14" {...field} />
                 </FormControl>
               </FormItem>
             )}
           />
           <Button
-            className="flex items-center justify-center md:gap-2 bg-[#6588DE]"
+            className="flex items-center justify-center md:gap-2 bg-black text-white md:h-12"
             type="submit"
           >
-            <span className='hidden md:block'>Send</span> <Send width={15} height={15} />
+            <span className='hidden md:block'>Send</span> <Send width={18} height={18} />
           </Button>
         </form>
       </Form>

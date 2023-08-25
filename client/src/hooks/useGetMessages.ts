@@ -1,14 +1,10 @@
-import { MessageTypes } from "@/types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const useGetMessages = () => {
-  const [fetchedMessages, setFetchedMessages] = useState<MessageTypes[]>([]);
   const [errors, setErros] = useState<unknown>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    useEffect(() => {
+    
       const fetchMessages = async () => {
-        setIsLoading(true);
         try {
           const response = await fetch("http://localhost:8080/messages");
           
@@ -16,18 +12,14 @@ const useGetMessages = () => {
           
           const result = await response.json();
           
-          setFetchedMessages(result);
+          return result;
         } catch (error) {
           console.log(error);
           setErros(error);
-        } finally {
-          setIsLoading(false);
-        }
-      };
-      fetchMessages();
-    }, []);
+          return null;
+      };}
 
-  return {fetchedMessages, isLoading, errors}
+  return {fetchMessages, errors}
 };
 
 export default useGetMessages
