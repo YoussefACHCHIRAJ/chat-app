@@ -38,8 +38,7 @@ io.on('connection', socket => {
     });    
     socket.on('join-req-accept', chatId => {
         socket.join(chatId);
-        const whoseInChat = io.sockets.adapter.rooms;
-        console.log("whose in chat:", whoseInChat);
+        
     });
     socket.on('send-message', async newMessage => {
         socket.to(newMessage.chatId).emit('receive-message', newMessage);
