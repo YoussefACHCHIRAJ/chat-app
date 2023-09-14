@@ -62,7 +62,6 @@ module.exports = {
         secondary: "#1A202F",
         lightText: "#96A9BA",
         green: "#46D362",
-        messageTo: "var(--messageTo)",
         
         RcMsgBg1: "#FF9D5D",
         RcMsgBg2: "#FF7B5B",

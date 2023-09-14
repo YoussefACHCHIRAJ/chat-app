@@ -10,7 +10,7 @@ const Message = ({ message }: { message: MessageTypes }) => {
   return (
     <div
       className={cn(
-        "md:p-2 px-2 md:py-3 py-[.3em] rounded-bl-xl rounded-br-xl max-w-[60%] lg:max-w-[40%] relative bg-gradient-to-br ",
+        "md:p-2 px-2 md:py-3 py-[.3em] rounded-bl-xl rounded-br-xl min-w-[5em] w-fit md:max-w-lg max-w-sm relative ",
         `${isMessageLefted ? "ml-auto message-sender rounded-tl-xl" : "rounded-tr-xl message-receiver"}`
       )}
     >

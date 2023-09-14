@@ -19,7 +19,7 @@ const UserChat = ({ user, onClick, receiverId, unReadMessage, closeModal }: user
     <div
       onClick={handleClick}
       className={cn(
-        `flex gap-2 md:px-3 px-2 py-3 mx-[.1em] md:mx-0 rounded-xl text-sm items-center justify-start cursor-pointer ${
+        `flex gap-2 md:px-3 px-2 py-3 mx-[.1em] md:mx-0 text-sm items-center justify-start cursor-pointer ${
           receiverId === user.id ? "bg-gradient-to-r from-msgBg to-SnMsgBg2" : 'bg-secondary'} ${isUnread ? 'bg-[#444254]' : ''}`
       )}
     >

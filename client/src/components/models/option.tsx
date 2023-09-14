@@ -4,11 +4,11 @@ interface optionProps {
 }
 const Option = ({option}:{option:optionProps}) => {
   return (
-    <div className='flex items-center gap-1'>
+    <div className=' option flex items-center gap-3 text-white cursor-pointer py-2 px-4'>
         <div className='w-5 h-5'>
             <img className="w-full h-full" src={option.icon} alt="user" />
         </div>
-        <p className=''>{option.label}</p>
+        <p className='font-semibold'>{option.label}</p>
     </div>
   )
 }

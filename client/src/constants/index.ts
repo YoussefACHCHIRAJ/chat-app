@@ -92,3 +92,18 @@ export const options = [
     label: 'Add new friend'
   }
 ]
+
+export const medaiOptions = [
+  {
+    icon: "/image.svg",
+    label: "Pictures"
+  },
+  {
+    icon: "/video.svg",
+    label: "Videos"
+  },
+  {
+    icon: "/docs.svg",
+    label: "Docs"
+  },
+]

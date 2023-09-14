@@ -5,23 +5,38 @@ import io from "socket.io-client";
 import { SideBar, Chat, TopBar } from "@/components/chat";
 import { userType, MessageTypes } from "@/types";
 import useGetMessages from "@/hooks/useGetMessages";
+import useGetNotification from "@/hooks/useGetNotifications";
+import useDeleteNotification from "@/hooks/useDeleteNotifications";
 
 export const socket = io("http://localhost:8080");
 
 const ChatPage = () => {
-  const { user } = useClerk();
-  const { fetchMessages, errors } = useGetMessages();
   const [chatId, setChatId] = useState<string>("");
   const [messages, setMessages] = useState<MessageTypes[]>([]);
   const [receiver, setReceiver] = useState<userType | null>(null);
   const [unreadmessage, setUnreadmessage] = useState(new Map<string, number>());
 
-  useEffect(() => {
-    const storage = JSON.parse(localStorage.getItem("unreadmessages") || "{}");
-    setUnreadmessage(new Map(Object.entries(storage)));
-  }, []);
+  const { user } = useClerk();
+  const { fetchMessages, errors } = useGetMessages();
+  const deleteNotification = useDeleteNotification();
+  const {
+    notifications,
+    errors: notifyErrors,
+    isLoading,
+  } = useGetNotification(user?.id as string);
 
-  const selectReceiver = (receiver: userType) => {
+  if (!isLoading) {
+    console.log("notifyErrors", notifyErrors);
+    console.log("notifications", notifications);
+  }
+  useEffect(() => {
+    // const storage = JSON.parse(localStorage.getItem("lastSeenMsgs") || "{}");
+    setUnreadmessage(
+      new Map(notifications.map((notify) => [notify.sender, notify.count]))
+    );
+  }, [isLoading]);
+
+  const selectReceiver = async (receiver: userType) => {
     const generatedChatId = [receiver.id, user?.id].sort().join("-");
     setChatId(generatedChatId);
     setReceiver(receiver);
@@ -31,11 +46,18 @@ const ChatPage = () => {
       senderId: user?.id,
       chatId: generatedChatId,
     });
-    setUnreadmessage((prevMessages) => {
-      const updateUnMessage = new Map(prevMessages);
-      updateUnMessage.delete(receiver.id);
-      return updateUnMessage;
-    });
+
+      setUnreadmessage((prevMessages) => {
+        const updateUnMessage = new Map(prevMessages);
+        updateUnMessage.delete(receiver.id);
+        return updateUnMessage;
+      });
+
+    const isnotifyDeleted = await deleteNotification(
+      user?.id as string,
+      receiver?.id
+    );
+    if(!isnotifyDeleted) console.log("failed get notifications");
   };
 
   useEffect(() => {
@@ -64,6 +86,7 @@ const ChatPage = () => {
         );
         return updateUnMessage;
       });
+      
     };
     socket.on("join-chat-req", handleJoinChat);
     socket.on("receive-message", handleReceiveMessages);
@@ -77,18 +100,17 @@ const ChatPage = () => {
 
   useEffect(() => {
     localStorage.setItem(
-      "unreadmessages",
+      "lastSeenMsgs",
       JSON.stringify(Object.fromEntries(unreadmessage))
     );
 
     const fetchingMessages = async () => {
-      const fetchedMessages = await fetchMessages();
+      const fetchedMessages = await fetchMessages(user?.id as string);
       fetchedMessages
         ? setMessages([...fetchedMessages])
         : console.log("fetching error", errors);
     };
     fetchingMessages();
-    
   }, [unreadmessage]);
 
   return (
@@ -109,15 +131,18 @@ const ChatPage = () => {
           receiver={receiver}
           messages={messages}
           setMessages={setMessages}
+          removeReceiver={setReceiver}
         />
       ) : (
-        <div className="md:text-xl text-lg font-bold mx-auto mt-10 px-4">
-          Select a friend to start chating
+        <div className=" mx-auto mt-10 px-4 text-white">
           <img
-            className="w-80 h-80 mx-auto mt-w"
+            className="w-80 h-80 mx-auto mt-4"
             src="/chat.svg"
             alt="chatting"
           />
+          <p className="md:text-3xl text-lg font-bold">
+            Select a friend to start chating
+          </p>
         </div>
       )}
     </main>

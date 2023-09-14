@@ -9,13 +9,14 @@ import useGetUsers from "@/hooks/useGetUsers";
 import { useClerk } from "@clerk/clerk-react";
 import UserChat from "./user-chat";
 import { userType } from "@/types";
+import { UserListSkeleton } from ".";
 
 interface FriendModalProps {
   isOpen: boolean;
   selectReceiver: (user: userType) => void;
   receiverId: string | undefined;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
-  unReadMessage:  Map<string, number>
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  unReadMessage: Map<string, number>;
 }
 
 const FriendListModal = ({
@@ -23,24 +24,22 @@ const FriendListModal = ({
   selectReceiver,
   receiverId,
   setIsOpen,
-  unReadMessage
+  unReadMessage,
 }: FriendModalProps) => {
   const { user } = useClerk();
   const { users, isLoading, errors } = useGetUsers(user?.id as string);
 
-  if (!user || isLoading) {
-    console.log("loading...");
-    return null;
-  }
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)}>
-      <DialogContent  className='bg-primary text-white'>
+      <DialogContent className="bg-primary text-white">
         <DialogHeader>
           <DialogTitle>Friends :</DialogTitle>
           <DialogDescription className="space-y-2">
-            {users?.length > 0 && !errors ? (
+            {isLoading ? (
+              <UserListSkeleton />
+            ) : users?.length > 0 && !errors ? (
               users?.map((user) => (
-                  <UserChat
+                <UserChat
                   key={user.id}
                   user={user}
                   onClick={selectReceiver}
@@ -50,10 +49,10 @@ const FriendListModal = ({
                 />
               ))
             ) : (
-              <div className="mx-auto text-center first-letter:capitalize mt-5">
-                there is no users.
+              <div className="mx-auto text-center first-letter:capitalize mt-5 text-white">
+                there is no users. or maybe you're not connecting
               </div>
-             )}
+            )}
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

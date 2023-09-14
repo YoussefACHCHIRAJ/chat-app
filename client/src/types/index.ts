@@ -1,4 +1,5 @@
 export interface MessageTypes {
+  _id: string
   chatId: string;
   sender: string;
   receiver: string;

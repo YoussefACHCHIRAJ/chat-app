@@ -5,6 +5,9 @@ import Option from "./option";
 import SendBox from "./send-box";
 import UserChat from "./user-chat";
 import UserListSkeleton from "./user-list-skeleton";
+import BlockChat from "./block-chat";
+import ShareMedia from "./share-media";
+import ClearChat from "./clear-chat";
 
 export {
     CurrentUserChat,
@@ -13,5 +16,8 @@ export {
     Option,
     SendBox,
     UserChat,
-    UserListSkeleton
+    UserListSkeleton,
+    BlockChat,
+    ShareMedia,
+    ClearChat
 }
