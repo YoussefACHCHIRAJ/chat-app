@@ -1,4 +1,3 @@
-const Message = require("../models/Message");
 const User = require("../models/User");
 
 const clearChat = async (req, res) => {

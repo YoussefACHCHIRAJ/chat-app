@@ -30,7 +30,6 @@ const ChatPage = () => {
     console.log("notifications", notifications);
   }
   useEffect(() => {
-    // const storage = JSON.parse(localStorage.getItem("lastSeenMsgs") || "{}");
     setUnreadmessage(
       new Map(notifications.map((notify) => [notify.sender, notify.count]))
     );
@@ -47,17 +46,17 @@ const ChatPage = () => {
       chatId: generatedChatId,
     });
 
-      setUnreadmessage((prevMessages) => {
-        const updateUnMessage = new Map(prevMessages);
-        updateUnMessage.delete(receiver.id);
-        return updateUnMessage;
-      });
+    setUnreadmessage((prevMessages) => {
+      const updateUnreadmessages = new Map(prevMessages);
+      updateUnreadmessages.delete(receiver.id);
+      return updateUnreadmessages;
+    });
 
     const isnotifyDeleted = await deleteNotification(
       user?.id as string,
       receiver?.id
     );
-    if(!isnotifyDeleted) console.log("failed get notifications");
+    if (!isnotifyDeleted) console.log("failed get notifications");
   };
 
   useEffect(() => {
@@ -74,19 +73,18 @@ const ChatPage = () => {
       if (receiver?.id === newMessage.sender) return;
 
       setUnreadmessage((prevMessages) => {
-        const updateUnMessage = new Map(prevMessages);
+        const updateUnreadmessages = new Map(prevMessages);
 
-        if (!updateUnMessage.has(newMessage.sender)) {
-          updateUnMessage.set(newMessage.sender, 1);
-          return updateUnMessage;
+        if (!updateUnreadmessages.has(newMessage.sender)) {
+          updateUnreadmessages.set(newMessage.sender, 1);
+          return updateUnreadmessages;
         }
-        updateUnMessage.set(
+        updateUnreadmessages.set(
           newMessage.sender,
-          updateUnMessage.get(newMessage.sender)! + 1
+          updateUnreadmessages.get(newMessage.sender)! + 1
         );
-        return updateUnMessage;
+        return updateUnreadmessages;
       });
-      
     };
     socket.on("join-chat-req", handleJoinChat);
     socket.on("receive-message", handleReceiveMessages);
@@ -99,16 +97,11 @@ const ChatPage = () => {
   }, [receiver]);
 
   useEffect(() => {
-    localStorage.setItem(
-      "lastSeenMsgs",
-      JSON.stringify(Object.fromEntries(unreadmessage))
-    );
-
     const fetchingMessages = async () => {
       const fetchedMessages = await fetchMessages(user?.id as string);
       fetchedMessages
         ? setMessages([...fetchedMessages])
-        : console.log("fetching error", errors);
+        : console.log("fetching failed", errors);
     };
     fetchingMessages();
   }, [unreadmessage]);
@@ -120,6 +113,7 @@ const ChatPage = () => {
         receiverId={receiver?.id}
         unReadMessage={unreadmessage}
       />
+
       <SideBar
         selectReceiver={selectReceiver}
         receiverId={receiver?.id}
