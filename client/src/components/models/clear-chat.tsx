@@ -29,7 +29,6 @@ const ClearChat = ({
   const handleClearChat = async () => {
     const chatId = [receiver.id, user?.id].sort().join("-");
     const isDeleted = await deleteConversationMsgs(user?.id as string, chatId);
-    console.log(`is deleted: ${isDeleted}`);
     location.reload();
   };
   return (

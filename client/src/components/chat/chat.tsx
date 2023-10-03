@@ -37,14 +37,6 @@ const chat = ({
     }
   }, [messages]);
 
-  const separator = (
-    <div className="flex items-center">
-      <div className="flex-grow border-t-2 border-gray-300"></div>
-      <div className="px-4 text-gray-500">New</div>
-      <div className="flex-grow border-t-2 border-gray-300"></div>
-    </div>
-  );
-
   const AllMessages = (
     <div
       className="space-y-3 flex-1 relative py-4 px-4   overflow-y-auto scrollbar"
@@ -54,16 +46,11 @@ const chat = ({
         messages.map((message) => {
           const { sender, receiver: msgReceiver } = message;
           const [userId, receiverId] = [user?.id, receiver?.id].sort();
-          
           if (
             (userId === msgReceiver && receiverId === sender) ||
             (sender === userId && msgReceiver === receiverId)
           ) {
-            return (
-              <>
-                <Message key={`${message._id}`} message={message} />
-              </>
-            );
+            return <Message key={message._id} message={message} />;
           }
         })
       ) : (

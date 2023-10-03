@@ -25,9 +25,9 @@ const ChatPage = () => {
     isLoading,
   } = useGetNotification(user?.id as string);
 
-  if (!isLoading) {
+  if (notifyErrors) {
     console.log("notifyErrors", notifyErrors);
-    console.log("notifications", notifications);
+   
   }
   useEffect(() => {
     setUnreadmessage(
@@ -56,7 +56,7 @@ const ChatPage = () => {
       user?.id as string,
       receiver?.id
     );
-    if (!isnotifyDeleted) console.log("failed get notifications");
+    if (!isnotifyDeleted) console.log("failed delete notifications");
   };
 
   useEffect(() => {
