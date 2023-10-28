@@ -10,26 +10,26 @@ const useGetNotification = (userId: string) => {
   const [errors, setErrors] = useState<unknown>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const getNotifications = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch(
-          `http://localhost:8080/notifications/${userId}`
-        );
+  // useEffect(() => {
+  //   const getNotifications = async () => {
+  //     setIsLoading(true);
+  //     try {
+  //       const response = await fetch(
+  //         `http://localhost:8080/notifications/${userId}`
+  //       );
 
-        if (!response.ok) throw new Error("failed fetching notifications.");
+  //       if (!response.ok) throw new Error("failed fetching notifications.");
 
-        const result = await response.json();
-        setNotifications(result.notifications);
-      } catch (error) {
-        setErrors(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    getNotifications();
-  }, []);
+  //       const result = await response.json();
+  //       setNotifications(result.notifications);
+  //     } catch (error) {
+  //       setErrors(error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   getNotifications();
+  // }, []);
   return { notifications, errors, isLoading };
 };
 

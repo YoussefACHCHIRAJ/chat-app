@@ -33,9 +33,7 @@ const SendBox = ({ setMessages, chatId, receiver }: sendBoxProps) => {
       sender: user?.id as string,
       receiver: receiver,
       content: values.message,
-      time: `${new Date(Date.now()).getHours()}:${new Date(
-        Date.now()
-      ).getMinutes()}`,
+      time: new Date(Date.now()),
     };
     socket.emit("send-message", messageData);
     setMessages((messages) => [...messages, messageData]);

@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import { MessageTypes } from "@/types";
 import { useClerk } from "@clerk/clerk-react";
 
@@ -16,7 +16,7 @@ const Message = ({ message }: { message: MessageTypes }) => {
     >
       <div className="message flex flex-col">
         <p className='text-sm md:text-lg text-white'>{content}</p>
-        <span className="time self-end text-xs md:text-sm font-light text-white">{time}</span>
+        <span className="time self-end text-xs md:text-sm font-light text-white">{formatDate(new Date(time))}</span>
       </div>
     </div>
   );

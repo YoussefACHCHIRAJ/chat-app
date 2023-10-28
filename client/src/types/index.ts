@@ -1,10 +1,10 @@
 export interface MessageTypes {
-  _id: string
+  _id?: string
   chatId: string;
   sender: string;
   receiver: string;
   content: string;
-  time: string;
+  time: Date;
 }
 export interface userType {
   id: string;
