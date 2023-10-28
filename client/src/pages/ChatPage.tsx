@@ -4,9 +4,9 @@ import io from "socket.io-client";
 
 import { SideBar, Chat, TopBar } from "@/components/chat";
 import { userType, MessageTypes } from "@/types";
-import useGetMessages from "@/hooks/useGetMessages";
-import useGetNotification from "@/hooks/useGetNotifications";
-import useDeleteNotification from "@/hooks/useDeleteNotifications";
+// import useGetMessages from "@/hooks/useGetMessages";
+// import useGetNotification from "@/hooks/useGetNotifications";
+// import useDeleteNotification from "@/hooks/useDeleteNotifications";
 
 export const socket = io("http://localhost:8080");
 
@@ -17,23 +17,23 @@ const ChatPage = () => {
   const [unreadmessage, setUnreadmessage] = useState(new Map<string, number>());
 
   const { user } = useClerk();
-  const { fetchMessages, errors } = useGetMessages();
-  const deleteNotification = useDeleteNotification();
-  const {
-    notifications,
-    errors: notifyErrors,
-    isLoading,
-  } = useGetNotification(user?.id as string);
+  // const { fetchMessages, errors } = useGetMessages();
+  // const deleteNotification = useDeleteNotification();
+  // const {
+  //   notifications,
+  //   errors: notifyErrors,
+  //   isLoading,
+  // } = useGetNotification(user?.id as string);
 
-  if (notifyErrors) {
-    console.log("notifyErrors", notifyErrors);
+  // if (notifyErrors) {
+  //   console.log("notifyErrors", notifyErrors);
    
-  }
-  useEffect(() => {
-    setUnreadmessage(
-      new Map(notifications.map((notify) => [notify.sender, notify.count]))
-    );
-  }, [isLoading]);
+  // }
+  // useEffect(() => {
+  //   setUnreadmessage(
+  //     new Map(notifications.map((notify) => [notify.sender, notify.count]))
+  //   );
+  // }, [isLoading]);
 
   const selectReceiver = async (receiver: userType) => {
     const generatedChatId = [receiver.id, user?.id].sort().join("-");
@@ -52,11 +52,11 @@ const ChatPage = () => {
       return updateUnreadmessages;
     });
 
-    const isnotifyDeleted = await deleteNotification(
-      user?.id as string,
-      receiver?.id
-    );
-    if (!isnotifyDeleted) console.log("failed delete notifications");
+    // const isnotifyDeleted = await deleteNotification(
+    //   user?.id as string,
+    //   receiver?.id
+    // );
+    // if (!isnotifyDeleted) console.log("failed delete notifications");
   };
 
   useEffect(() => {
@@ -96,16 +96,18 @@ const ChatPage = () => {
     };
   }, [receiver]);
 
-  useEffect(() => {
-    const fetchingMessages = async () => {
-      const fetchedMessages = await fetchMessages(user?.id as string);
-      fetchedMessages
-        ? setMessages([...fetchedMessages])
-        : console.log("fetching failed", errors);
-    };
-    fetchingMessages();
-  }, [unreadmessage]);
+  // useEffect(() => {
+  //   const fetchingMessages = async () => {
+  //     const fetchedMessages = await fetchMessages(user?.id as string);
+  //     fetchedMessages
+  //       ? setMessages([...fetchedMessages])
+  //       : console.log("fetching failed", errors);
+  //   };
+  //   fetchingMessages();
+  // }, [unreadmessage]);
 
+    if(messages.length > 0 ) console.log({message: typeof(messages[0].time)});
+    
   return (
     <main className="flex flex-col md:flex-row w-full h-full">
       <TopBar
