@@ -14,6 +14,7 @@ const bodyParser = require("body-parser");
 
 const { UserController, MessageController } = require("./controller/");
 const ChatRoom = require("./models/ChatRoom");
+const Message = require("./models/Message");
 
 const app = express();
 app.use(cors());
@@ -39,7 +40,7 @@ io.on('connection', socket => {
         socket.join(chatId);
     });
     socket.on('send-message', async newMessage => {
-        socket.to(newMessage.chatId).emit('receive-message', newMessage);
+        socket.to(newMessage.chatRoomId).emit('receive-message', newMessage);
         MessageController.store(newMessage);
         // setNotifications(newMessage.sender,newMessage.receiver );
     })
@@ -53,7 +54,7 @@ app.get('/', (req, res) => {
     res.json('hello me');
 });
 app.get('/userslist', UserController.findAll);
-// app.get('/messages/:userId', getMessages);
+app.get('/messages/:chatId', MessageController.index);
 // app.delete('/messages/:userId', clearChat);
 // app.get('/notifications/:id', getNotifications);
 // app.delete("/notifications", deleteNotification);

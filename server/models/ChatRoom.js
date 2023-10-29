@@ -1,6 +1,7 @@
 const Database = require("../databases/database");
 
 class ChatRoom {
+   
     static async create(chatdata) {
         const { chatId, senderId, receiverId } = chatdata
         const pool = Database.createPool();
