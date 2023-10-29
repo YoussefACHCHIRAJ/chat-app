@@ -42,17 +42,10 @@ const chat = ({
       className="space-y-3 flex-1 relative py-4 px-4   overflow-y-auto scrollbar"
       ref={chatRef}
     >
-      {messages.length > 0 ? (
-        messages.map((message) => {
-          const { sender, receiver: msgReceiver } = message;
-          const [userId, receiverId] = [user?.id, receiver?.id].sort();
-          if (
-            (userId === msgReceiver && receiverId === sender) ||
-            (sender === userId && msgReceiver === receiverId)
-          ) {
-            return <Message key={message._id} message={message} />;
-          }
-        })
+      {messages && messages.length > 0 ? (
+        messages.map((message) => (
+          <Message key={message.id || Math.random()} message={message} />
+        ))
       ) : (
         <h1 className="text-center font-medium tracking-wider leading-9 text-3xl mt-10 text-lightGray px-4">
           There is no messages.

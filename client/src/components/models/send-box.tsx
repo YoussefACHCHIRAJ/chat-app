@@ -29,12 +29,13 @@ const SendBox = ({ setMessages, chatId, receiver }: sendBoxProps) => {
     if (values.message === "") return;
 
     const messageData: MessageTypes = {
-      chatId: chatId,
-      sender: user?.id as string,
-      receiver: receiver,
+      chatRoomId: chatId,
+      senderId: user?.id as string,
+      receiverId: receiver,
       content: values.message,
-      time: new Date(Date.now()),
+      time: new Date(),
     };
+
     socket.emit("send-message", messageData);
     setMessages((messages) => [...messages, messageData]);
     form.reset();

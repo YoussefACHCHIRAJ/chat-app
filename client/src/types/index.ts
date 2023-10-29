@@ -1,8 +1,8 @@
 export interface MessageTypes {
-  _id?: string
-  chatId: string;
-  sender: string;
-  receiver: string;
+  id?: string
+  chatRoomId: string;
+  senderId: string;
+  receiverId: string;
   content: string;
   time: Date;
 }

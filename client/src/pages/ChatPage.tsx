@@ -4,7 +4,7 @@ import io from "socket.io-client";
 
 import { SideBar, Chat, TopBar } from "@/components/chat";
 import { userType, MessageTypes } from "@/types";
-// import useGetMessages from "@/hooks/useGetMessages";
+import useGetMessages from "@/hooks/useGetMessages";
 // import useGetNotification from "@/hooks/useGetNotifications";
 // import useDeleteNotification from "@/hooks/useDeleteNotifications";
 
@@ -17,7 +17,7 @@ const ChatPage = () => {
   const [unreadmessage, setUnreadmessage] = useState(new Map<string, number>());
 
   const { user } = useClerk();
-  // const { fetchMessages, errors } = useGetMessages();
+  const { fetchMessages, errors } = useGetMessages();
   // const deleteNotification = useDeleteNotification();
   // const {
   //   notifications,
@@ -39,6 +39,9 @@ const ChatPage = () => {
     const generatedChatId = [receiver.id, user?.id].sort().join("-");
     setChatId(generatedChatId);
     setReceiver(receiver);
+    const fetchedMessages = await fetchMessages(generatedChatId);
+    fetchedMessages ? setMessages(fetchedMessages.result) : console.log({errors});
+    
 
     socket.emit("join-chat", {
       receiverId: receiver.id,
@@ -70,18 +73,18 @@ const ChatPage = () => {
     const handleReceiveMessages = (newMessage: MessageTypes) => {
       setMessages((messages) => [...messages, newMessage]);
 
-      if (receiver?.id === newMessage.sender) return;
+      if (receiver?.id === newMessage.senderId) return;
 
       setUnreadmessage((prevMessages) => {
         const updateUnreadmessages = new Map(prevMessages);
 
-        if (!updateUnreadmessages.has(newMessage.sender)) {
-          updateUnreadmessages.set(newMessage.sender, 1);
+        if (!updateUnreadmessages.has(newMessage.senderId)) {
+          updateUnreadmessages.set(newMessage.senderId, 1);
           return updateUnreadmessages;
         }
         updateUnreadmessages.set(
-          newMessage.sender,
-          updateUnreadmessages.get(newMessage.sender)! + 1
+          newMessage.senderId,
+          updateUnreadmessages.get(newMessage.senderId)! + 1
         );
         return updateUnreadmessages;
       });
@@ -96,18 +99,9 @@ const ChatPage = () => {
     };
   }, [receiver]);
 
-  // useEffect(() => {
-  //   const fetchingMessages = async () => {
-  //     const fetchedMessages = await fetchMessages(user?.id as string);
-  //     fetchedMessages
-  //       ? setMessages([...fetchedMessages])
-  //       : console.log("fetching failed", errors);
-  //   };
-  //   fetchingMessages();
-  // }, [unreadmessage]);
+  useEffect(() => {
+  }, [messages]);
 
-    if(messages.length > 0 ) console.log({message: typeof(messages[0].time)});
-    
   return (
     <main className="flex flex-col md:flex-row w-full h-full">
       <TopBar
