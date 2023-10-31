@@ -8,6 +8,12 @@ import useGetMessages from "@/hooks/useGetMessages";
 // import useGetNotification from "@/hooks/useGetNotifications";
 // import useDeleteNotification from "@/hooks/useDeleteNotifications";
 
+interface DataType {
+  receiverId: string,
+  senderId: string,
+  chatId: string,
+}
+
 export const socket = io("http://localhost:8080");
 
 const ChatPage = () => {
@@ -63,7 +69,7 @@ const ChatPage = () => {
   };
 
   useEffect(() => {
-    const handleJoinChat = (data: any) => {
+    const handleJoinChat = (data: DataType) => {
       const { receiverId, chatId } = data;
       if (receiverId !== user?.id) return;
       setChatId(chatId);
@@ -97,11 +103,10 @@ const ChatPage = () => {
       socket.off("join-req-accept");
       socket.off("receive-message");
     };
-  }, [receiver]);
+  }, [receiver, user?.id]);
 
   useEffect(() => {
   }, [messages]);
-
   return (
     <main className="flex flex-col md:flex-row w-full h-full">
       <TopBar

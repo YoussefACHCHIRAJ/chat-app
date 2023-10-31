@@ -1,3 +1,4 @@
+import { MessageTypes } from "@/types";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -24,4 +25,10 @@ function isSameDay(date1: Date, date2: Date) {
     date1.getMonth() === date2.getMonth() &&
     date1.getFullYear() === date2.getFullYear()
   );
+}
+
+
+export function messageShouldDisplay(message:MessageTypes, currentReceiver:string, currentUser: string){
+  const {receiverId, senderId} = message;
+  return (receiverId === currentReceiver && senderId === currentUser) || (receiverId === currentUser && senderId === currentReceiver)
 }

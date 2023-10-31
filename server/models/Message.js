@@ -23,7 +23,6 @@ class Message {
                 console.log('error: ', error);
                 return reject(error);
             }
-            console.log({result});
             return resolve(result);
         })
         })

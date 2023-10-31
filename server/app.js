@@ -12,7 +12,7 @@ const bodyParser = require("body-parser");
 //     deleteNotification
 // } = require("./controller/");
 
-const { UserController, MessageController } = require("./controller/");
+const { UserController, MessageController, ChatController } = require("./controller/");
 const ChatRoom = require("./models/ChatRoom");
 const Message = require("./models/Message");
 
@@ -34,7 +34,8 @@ io.on('connection', socket => {
     socket.on('join-chat', data => {
         socket.join(data.chatId);
         io.emit('join-chat-req', data);
-        ChatRoom.create(data)
+        ChatController.store(data)
+        console.log({data});
     });
     socket.on('join-req-accept', (chatId) => {
         socket.join(chatId);
