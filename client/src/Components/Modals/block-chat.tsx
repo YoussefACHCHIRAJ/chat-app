@@ -5,17 +5,15 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { userType } from "@/types";
-import { Button } from "@/components/ui/button";
+} from "@/Components/ui/dialog";
+import { Button } from "@/Components/ui/button";
 
 interface BlockChatProps {
-  receiver: userType;
   openBlock: boolean;
   setOpenBlock: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const BlockChat = ({ receiver, openBlock, setOpenBlock }: BlockChatProps) => {
+const BlockChat = ({  openBlock, setOpenBlock }: BlockChatProps) => {
   return (
     <Dialog open={openBlock} onOpenChange={() => setOpenBlock(false)}>
       <DialogContent className="bg-primary text-white">
@@ -24,11 +22,11 @@ const BlockChat = ({ receiver, openBlock, setOpenBlock }: BlockChatProps) => {
           <DialogDescription className="space-y-2 text-lightGray text-md">
             Are you sure you want block{" "}
             <span className="text-white font-semibold">
-              {receiver.fullName}
+              user name
             </span>{" "}
             ? <br />
             <span className="text-white font-semibold">
-              {receiver.fullName}
+              user name
             </span>{" "}
             can not be able to send you a messages.
           </DialogDescription>

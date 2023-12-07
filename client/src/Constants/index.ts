@@ -48,31 +48,31 @@ export const messages = [
   {
     from: "Tracy Wright",
     to: "Phillip Torff",
-    message: "Hello m8!",
+    content: "Hello m8!",
     time: "15:02",
   },
   {
     from: "Tracy Wright",
     to: "Phillip Torff",
-    message: "I have send the files back to ya it only took me about 60 mins this time was with testing too.",
+    content: "I have send the files back to ya it only took me about 60 mins this time was with testing too.",
     time: "15:07",
   },
   {
     from: "Tracy Wright",
     to: "Phillip Torff",
-    message: "These are the photos I have found for the moodboard project. Please let me know if you like them or not.",
+    content: "These are the photos I have found for the moodboard project. Please let me know if you like them or not.",
     time: "15:08",
   },
   {
     from: "Phillip Torff",
     to: "Tracy Wright",
-    message: "Wow! These photos are amazing! I'll add them to moodboard and send you the final presentation. ",
+    content: "Wow! These photos are amazing! I'll add them to moodboard and send you the final presentation. ",
     time: "15:10",
   },
   {
     from: "Phillip Torff",
     to: "Tracy Wright",
-    message: "Thank you Phillip!",
+    content: "Thank you Phillip!",
     time: "15:10",
   },
 ];

@@ -1,4 +1,4 @@
-import { ChatPage } from "./pages/";
+import { ChatPage } from "./Pages";
 import {
   ClerkProvider,
   SignedIn,

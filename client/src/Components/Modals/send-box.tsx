@@ -3,42 +3,37 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/Components/ui/button";
+import { Form, FormControl, FormField, FormItem } from "@/Components/ui/form";
+import { Input } from "@/Components/ui/input";
 import { Send, Smile } from "lucide-react";
-import { useClerk } from "@clerk/clerk-react";
-import { MessageTypes } from "@/types";
-import { socket } from "@/pages/ChatPage";
+import { useSelector } from "react-redux";
+import { RootState } from "@/Redux/store";
+import { socket } from "@/Pages";
+import { MessageTypes } from "@/Types";
 
-interface sendBoxProps {
-  setMessages: React.Dispatch<React.SetStateAction<MessageTypes[]>>;
-  chatId: string;
-  receiver: string;
-}
-const SendBox = ({ setMessages, chatId, receiver }: sendBoxProps) => {
-  const { user } = useClerk();
+const SendBox = ({setMessages}:{setMessages: React.Dispatch<React.SetStateAction<MessageTypes[]>>}) => {
+  const receiver = useSelector((state: RootState) => state.receiver.value);
+  const authUser = useSelector((state: RootState) => state.authUser.value);
+  
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       message: "",
     },
   });
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (values.message === "") return;
 
-    const messageData: MessageTypes = {
-      chatId: chatId,
-      sender: user?.id as string,
-      receiver: receiver,
+    const newMessage:MessageTypes = {
+      sender: authUser,
+      receiver,
       content: values.message,
-      time: `${new Date(Date.now()).getHours()}:${new Date(
-        Date.now()
-      ).getMinutes()}`,
-    };
-    socket.emit("send-message", messageData);
-    setMessages((messages) => [...messages, messageData]);
+      time: new Date().toISOString()
+    }
+    setMessages(prevMessages => [...prevMessages, newMessage]);
+    socket.emit("send-message", newMessage);
     form.reset();
   }
 

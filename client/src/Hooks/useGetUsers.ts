@@ -1,11 +1,15 @@
-import { userType } from "@/types";
+import { setAuthUser } from "@/Redux/AuthUser/authUserSlice";
+import { UserType } from "@/Types";
+import { useClerk } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
-const useGetUsers = (currentUserId:string) => {
-  const [users, setUsers] = useState<userType[]>([]);
+const useGetUsers = () => {
+  const [users, setUsers] = useState<UserType[]>([]);
   const [errors, setErros] = useState<unknown>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
+  const dispatch = useDispatch();
+  const { user: authUser } = useClerk();
   useEffect(() => {
     const fetchUsers = async () => {
       setIsLoading(true);
@@ -13,10 +17,13 @@ const useGetUsers = (currentUserId:string) => {
         const response = await fetch("http://localhost:8080/userslist");
         if (!response.ok) throw new Error("failed get users");
         const result = await response.json();
-        const usersFilter = result?.users?.filter(
-          (userData: userType) => userData.id !== currentUserId
+        setUsers(result.users);
+        // set auth user globally
+        dispatch(
+          setAuthUser(
+            result.users.find((user: UserType) => user.userId === authUser?.id)
+          )
         );
-        setUsers(usersFilter);
       } catch (error) {
         console.log(error);
         setErros(error);
@@ -27,7 +34,7 @@ const useGetUsers = (currentUserId:string) => {
     fetchUsers();
   }, []);
 
-  return {users, isLoading, errors}
+  return { users, isLoading, errors };
 };
 
-export default useGetUsers
+export default useGetUsers;

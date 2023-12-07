@@ -2,10 +2,10 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/Components/ui/popover";
 import { MoreVertical } from "lucide-react";
-import Option from "../models/option";
-import { options } from "@/constants";
+import Option from "../Modals/option";
+import { options } from "@/Constants";
 
 
 const Options = () => {

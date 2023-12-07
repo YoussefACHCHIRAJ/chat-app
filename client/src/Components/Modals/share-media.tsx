@@ -2,10 +2,10 @@ import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-  } from "@/components/ui/popover";
+  } from "@/Components/ui/popover";
   import { Paperclip } from "lucide-react";
-  import Option from "../models/option";
-  import { medaiOptions } from "@/constants";
+  import Option from "./option";
+  import { medaiOptions } from "@/Constants";
   
   
   const ShareMedia = () => {
