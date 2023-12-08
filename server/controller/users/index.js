@@ -9,9 +9,7 @@ const saveUsersToDB = async userData => {
 
     if (isUserExist) return isUserExist._id;
 
-    const newUser = new User(userData);
-    await newUser.save();
-    console.log({ userSaved: newUser });
+    const newUser = User.create(userData);
     return newUser._id;
 }
 const getUsers = async (req, res) => {
@@ -29,10 +27,8 @@ const getUsers = async (req, res) => {
         
             }
             const newUserId = await saveUsersToDB(userData);
-            // console.log({ newUser });
             return {_id: newUserId, ...userData};
         }));
-        // console.log({ usersListData });
         res.json({ users: usersListData });
     } catch (error) {
         console.log('[users]: ', error);

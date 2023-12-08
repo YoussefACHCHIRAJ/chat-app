@@ -1,14 +1,23 @@
+const { default: mongoose } = require("mongoose");
 const Message = require("../../models/Message");
-const User = require("../../models/User");
 
 const getAll = async (req, res) => {
-    const userId = req.params.userId;
+    const loggedInUser = req.params.loggedInUser;
+    const recipient = req.query.recipient;
     try {
-        const user = await User.findOne({ userId });
-        const messagesIds = user.messages.map(message => message.id);
-        const messages = await Message.find({ _id: { $in: messagesIds } }).populate('sender').populate('receiver');
-        console.log({messages, messagesIds, user})
-        res.json(messages);
+        const loggedInUserId = new mongoose.Types.ObjectId(loggedInUser);
+        const recipientId = new mongoose.Types.ObjectId(recipient);
+
+        const messages = await Message.find({
+            $or : [
+                {sender: loggedInUser, receiver: recipient, isDeletedBySender: {$ne: true}},
+                {sender: recipient, receiver: loggedInUser, isDeletedByReceiver: {$ne: true}}
+            ]
+        })
+            .populate('sender')
+            .populate('receiver');
+
+        res.json({ messages });
     } catch (error) {
         console.log('[getMessages]: ', error);
         res.json({ error });

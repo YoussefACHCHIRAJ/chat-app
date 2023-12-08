@@ -10,8 +10,15 @@ const MessageSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
+    isDeletedBySender: {
+        type: Boolean,
+        default: false
+    },
+    isDeletedByReceiver: {
+        type: Boolean,
+        default: false
+    },
     content: String,
-    chatId: String,
     time: Date,
 }, { timestamps: true });
 

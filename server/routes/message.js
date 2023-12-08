@@ -5,8 +5,8 @@ const router = require('express').Router();
 const getAll = require("../controller/messages");
 const {destroyAll} = require("../controller/messages/destroy");
 
-router.get('/messages/:userId', getAll);
-router.delete('/messages/:userId', destroyAll);
+router.get('/messages/:loggedInUser', getAll);
+router.delete('/messages/:loggedInUserId', destroyAll);
 
 
 module.exports = router;

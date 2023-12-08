@@ -11,13 +11,12 @@ const store = async newMessage => {
             sender: new mongoose.Types.ObjectId(sender._id),
             receiver: new mongoose.Types.ObjectId(receiver._id),
         };
-        const newSavedMessage = new Message(newMessage);
-        await newSavedMessage.save();
-        await User.updateMany(
-            { _id: { $in: [sender._id, receiver._id] } },
-            { $push: { messages: { id: newSavedMessage._id, chatId: newMessage.chatId } } });
+        const createdMessage = Message.create(newMessage);
+        // await User.updateMany(
+        //     { _id: { $in: [sender._id, receiver._id] } },
+        //     { $push: { messages: { id: createdMessage._id } } });
 
-        return newSavedMessage._id;
+        return createdMessage._id;
     } catch (error) {
 
         console.log('[save new messages: ]', error);
