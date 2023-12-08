@@ -1,29 +1,26 @@
-import { useState } from "react";
+import { useQuery } from "react-query";
 
-const useGetMessages = () => {
-  const [errors, setErros] = useState<unknown>(null);
-  const [isLoading, setIsLoading] = useState<unknown>(false);
+const useGetMessages = (loggedInUser: string, recipient: string) => {
+  const results = useQuery({
+    queryKey: ["messages", { loggedInUser }, { recipient }],
+    queryFn: async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/messages/${loggedInUser}?recipient=${recipient}`
+        );
 
-  const fetchMessages = async (id: string) => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(`http://localhost:8080/messages/${id}`);
+        if (!response.ok) throw new Error("failed to get messages");
 
-      if (!response.ok) throw new Error("failed to get messages");
+        const result = await response.json();
 
-      const result = await response.json();
+        return result.messages;
+      } catch (error) {
+        throw new Error("failed to get messages");
+      }
+    },
+  });
 
-      return result;
-    } catch (error) {
-      console.log(error);
-      setErros(error);
-      return null;
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  return { fetchMessages, errors, isLoading };
+  return results;
 };
 
 export default useGetMessages;

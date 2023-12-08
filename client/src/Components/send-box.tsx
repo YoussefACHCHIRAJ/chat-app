@@ -11,10 +11,12 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/Redux/store";
 import { socket } from "@/Pages";
 import { MessageTypes } from "@/Types";
+import { QueryClient } from "react-query";
 
 const SendBox = ({setMessages}:{setMessages: React.Dispatch<React.SetStateAction<MessageTypes[]>>}) => {
   const receiver = useSelector((state: RootState) => state.receiver.value);
   const authUser = useSelector((state: RootState) => state.authUser.value);
+  const queryClient = new QueryClient();
   
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -32,6 +34,7 @@ const SendBox = ({setMessages}:{setMessages: React.Dispatch<React.SetStateAction
       content: values.message,
       time: new Date().toISOString()
     }
+    queryClient.setQueryData<MessageTypes[] | undefined>('messages', old => [...(old || []), newMessage])
     setMessages(prevMessages => [...prevMessages, newMessage]);
     socket.emit("send-message", newMessage);
     form.reset();

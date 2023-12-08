@@ -7,17 +7,34 @@ import {
   DialogTitle,
 } from "@/Components/ui/dialog";
 import { Button } from "@/Components/ui/button";
+import useClearConversation from "@/Hooks/useClearConversation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/Redux/store";
+// import { QueryClient } from "react-query";
 
-interface ClearChatProps {
+interface ClearChatModalProps {
   openClearChat: boolean;
   setOpenClearChat: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ClearChat = ({
+const ClearChatModal = ({
   openClearChat,
   setOpenClearChat,
-}: ClearChatProps) => {
+}: ClearChatModalProps) => {
+  const authUser = useSelector((state: RootState) => state.authUser.value);
+  const { clearConversation, errors, isLoading } = useClearConversation();
+  // const queryClient = new QueryClient()
 
+  const clearChatConversation = () => {
+    clearConversation(authUser?._id as string);
+    // queryClient.setQueryData('messages', [])
+    
+    if(!errors) {
+      setOpenClearChat(false);
+    }
+    else console.log("[failed clear chat: ", errors);
+    
+  }
   return (
     <Dialog open={openClearChat} onOpenChange={() => setOpenClearChat(false)}>
       <DialogContent className="bg-primary text-white">
@@ -38,6 +55,8 @@ const ClearChat = ({
           <Button
             className="font-semibold tracking-wider text-md"
             variant="destructive"
+            onClick={clearChatConversation}
+            disabled={isLoading}
           >
             Clear
           </Button>
@@ -47,4 +66,4 @@ const ClearChat = ({
   );
 };
 
-export default ClearChat;
+export default ClearChatModal;

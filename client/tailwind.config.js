@@ -55,7 +55,7 @@ module.exports = {
         headText:"#52585D",
         red: "#FD2828",
         orange: "#F3BA4A",
-        lightGray: "#cfdaf5",
+        lightGray: "#7C7C7C",
         
         black: "#0a0408",
         primary: "#151A28",

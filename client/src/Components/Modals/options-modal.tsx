@@ -4,11 +4,11 @@ import {
   PopoverTrigger,
 } from "@/Components/ui/popover";
 import { MoreVertical } from "lucide-react";
-import Option from "../Modals/option";
+import Option from "../option";
 import { options } from "@/Constants";
 
 
-const Options = () => {
+const OptionsModal = () => {
   return (
       <Popover>
         <PopoverTrigger><MoreVertical  className="text-white"/></PopoverTrigger>
@@ -21,4 +21,4 @@ const Options = () => {
   );
 };
 
-export default Options;
+export default OptionsModal;

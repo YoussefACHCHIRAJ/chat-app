@@ -8,12 +8,12 @@ import {
 } from "@/Components/ui/dialog";
 import { Button } from "@/Components/ui/button";
 
-interface BlockChatProps {
+interface BlockChatModalProps {
   openBlock: boolean;
   setOpenBlock: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const BlockChat = ({  openBlock, setOpenBlock }: BlockChatProps) => {
+const BlockChatModal = ({  openBlock, setOpenBlock }: BlockChatModalProps) => {
   return (
     <Dialog open={openBlock} onOpenChange={() => setOpenBlock(false)}>
       <DialogContent className="bg-primary text-white">
@@ -47,4 +47,4 @@ const BlockChat = ({  openBlock, setOpenBlock }: BlockChatProps) => {
   );
 };
 
-export default BlockChat;
+export default BlockChatModal;

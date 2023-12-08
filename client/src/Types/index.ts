@@ -2,8 +2,9 @@ export interface MessageTypes {
   _id?: string 
   sender: UserType | null;
   receiver: UserType | null;
+  isDeletedBySender?: boolean,
+  isDeletedByReceiver?: boolean,
   content: string;
-  // chatId: string;
   time: string;
 }
 

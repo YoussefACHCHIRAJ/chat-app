@@ -1,40 +1,36 @@
 import { setAuthUser } from "@/Redux/AuthUser/authUserSlice";
 import { UserType } from "@/Types";
 import { useClerk } from "@clerk/clerk-react";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 
 const useGetUsers = () => {
-  const [users, setUsers] = useState<UserType[]>([]);
-  const [errors, setErros] = useState<unknown>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
   const { user: authUser } = useClerk();
-  useEffect(() => {
-    const fetchUsers = async () => {
-      setIsLoading(true);
+
+  const results = useQuery({
+    queryKey: ["usersList"],
+    queryFn: async () => {
       try {
         const response = await fetch("http://localhost:8080/userslist");
         if (!response.ok) throw new Error("failed get users");
         const result = await response.json();
-        setUsers(result.users);
+
         // set auth user globally
         dispatch(
           setAuthUser(
             result.users.find((user: UserType) => user.userId === authUser?.id)
           )
         );
+        return result.users;
       } catch (error) {
-        console.log(error);
-        setErros(error);
-      } finally {
-        setIsLoading(false);
+        throw new Error("failed get users");
       }
-    };
-    fetchUsers();
-  }, []);
+    },
+  });
 
-  return { users, isLoading, errors };
+  return results;
 };
 
 export default useGetUsers;

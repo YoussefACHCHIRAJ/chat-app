@@ -1,23 +1,14 @@
-import CurrentUserChat from "./current-user-chat";
-import FriendListModal from "./friend-list-modal";
-import Message from "./message";
-import Option from "./option";
-import SendBox from "./send-box";
-import UserChat from "./user-chat";
-import UserListSkeleton from "./user-list-skeleton";
-import BlockChat from "./block-chat";
-import ShareMedia from "./share-media";
-import ClearChat from "./clear-chat";
-
+import FriendListModal from "../friend-list";
+import BlockChatModal from "./block-chat-modal";
+import ShareMediaModal from "./share-media-modal";
+import ClearChatModal from "./clear-chat-modal";
+import LoadingModal from "./loading-modal";
+import ErrorMessageModal from "./error-message-modal";
 export {
-    CurrentUserChat,
-    FriendListModal,
-    Message,
-    Option,
-    SendBox,
-    UserChat,
-    UserListSkeleton,
-    BlockChat,
-    ShareMedia,
-    ClearChat
-}
+  FriendListModal,
+  BlockChatModal,
+  ShareMediaModal,
+  ClearChatModal,
+  LoadingModal,
+  ErrorMessageModal
+};
