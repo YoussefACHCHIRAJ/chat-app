@@ -1,15 +1,23 @@
-const User = require("../../models/User");
+const { default: mongoose } = require("mongoose");
+const Notification = require("../../models/Notification");
 
 const deleteNotification = async (req, res) => {
+    const authUser = req.params.authUser;
     const sender = req.query.sender;
-    const receiver = req.query.receiver;
     try {
-        // const senderId = User.findOne(sender);
-        // await User.updateOne({userId:receiver}, {$pull: {notifications: {senderId}}});
-        res.json({deleteNotify: true});
+        const authUserId = new mongoose.Types.ObjectId(authUser);
+        const senderId = new mongoose.Types.ObjectId(sender);
+        const deleteResult = await Notification.updateOne({
+            receiver: authUserId,
+            sender: senderId
+        }, { count: 0 }
+        )
+
+        console.log({ deleteResult, authUser, sender });
+        res.json({ deleteNotify: true });
     } catch (error) {
         console.log('[deleteNotification]: ', error);
-        res.json({error});
+        res.json({ error });
     }
 }
 

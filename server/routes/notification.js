@@ -5,7 +5,7 @@ const getAll = require("../controller/notifications");
 const destroy = require("../controller/notifications/destroy");
 
 router.get('/notifications/:id', getAll);
-router.delete("/notifications/:receiver", destroy);
+router.delete("/notifications/:authUser", destroy);
 
 
 module.exports = router;

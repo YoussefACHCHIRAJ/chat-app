@@ -1,31 +1,27 @@
+const { default: mongoose } = require("mongoose");
 const Notification = require("../../models/Notification");
-const User = require("../../models/User");
 
-const store = async (sender, receiver, message) => {
+const store = async (sender, receiver) => {
     try {
+        const receiverId = new mongoose.Types.ObjectId(receiver._id);
+        const senderId = new mongoose.Types.ObjectId(sender._id);
+        const notification = await Notification.findOne({ receiver: receiverId, sender: senderId });
 
-        // const [sender, receiver] = await Promise.all([
-        //     User.findOne({ userId: senderId }),
-        //     User.findOne({ userId: receiverId })
-        // ]);
-
-        const notification = await Notification.findOne({ sender: sender._id });
 
         if (notification) {
             notification.count++;
             await notification.save();
-            return;
+
+            return notification._id;
         }
 
-        
-        const newNotification = await new Notification({
-            receiver: receiver._id,
-            sender: sender._id,
-            message,
+        const newNotification = await Notification.create({
+            receiver: receiverId,
+            sender: senderId,
             count: 0
         });
-        await newNotification.save();
 
+        return newNotification._id;
     } catch (error) {
         console.log('[setNotification]: ', error);
         return false;

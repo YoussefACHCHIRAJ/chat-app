@@ -1,10 +1,15 @@
-const User = require("../../models/User");
+const { default: mongoose } = require("mongoose");
+const Notification = require("../../models/Notification");
 
 const getNotifications = async (req, res) => {
-    const userId = req.params.id;
+    const authUser = req.params.id;
     try {
-        const user = await User.findOne({userId});
-        res.json({notifications: user.notifications});
+
+        const authUserId = new mongoose.Types.ObjectId(authUser);
+
+        const notifications = await Notification.find({receiver: authUserId});
+        res.json({notifications: notifications});
+
     } catch (error) {
         console.log('[getNotification]: ', error);
         res.json({error});

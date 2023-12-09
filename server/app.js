@@ -43,7 +43,7 @@ mongoose.connect(DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     });
 
 const runChatServer = () => {
-    
+
     const server = app.listen(PORT);
     const io = new Server(server, {
         cors: {
@@ -62,14 +62,17 @@ const runChatServer = () => {
 
         socket.on('send-message', async newMessage => {
             const { sender, receiver } = newMessage;
-
             const receiverSocket = users.get(receiver.userId);
-            if (receiverSocket)
-                receiverSocket.emit('receive-message', newMessage);
-            const messageId = await storeMessages(newMessage);
 
+            if (receiverSocket) {
+                receiverSocket.emit('receive-message', newMessage);
+            }
+            await storeMessages(newMessage);
+
+            await storeNotifications(sender, receiver);
+            io.emit("refresh-notifications");
+            console.log("notifications has been refetch.")
         })
-        // storeNotifications(sender, receiver, messageId);
         socket.on('disconnect', () => {
             users.forEach((socketStored, userId) => {
                 if (socketStored === socket) {
@@ -90,8 +93,8 @@ module.exports = app;
     + Send a unicast message. [done]
     + Indicate oline users. [done]
     + Clear individual chat from one side (sender/receiver). [done] \in the test mode....
-    + Convert a fetch request to axios request.
-    + Set notifications.
+    + Set notifications. => [bug to fix ] : if the receiver in the chat room don't save the notification.
+    + Convert a fetch requests to axios requests.
     + Add indexes to the database.
     + Indicate the last message in the friends list.
     + Add lazy loading.
