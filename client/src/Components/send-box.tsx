@@ -13,11 +13,14 @@ import { socket } from "@/Pages";
 import { MessageTypes } from "@/Types";
 import { QueryClient } from "react-query";
 
-const SendBox = ({setMessages}:{setMessages: React.Dispatch<React.SetStateAction<MessageTypes[]>>}) => {
+const SendBox = ({
+  setMessages,
+}: {
+  setMessages: React.Dispatch<React.SetStateAction<MessageTypes[]>>;
+}) => {
   const receiver = useSelector((state: RootState) => state.receiver.value);
   const authUser = useSelector((state: RootState) => state.authUser.value);
   const queryClient = new QueryClient();
-  
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -28,29 +31,28 @@ const SendBox = ({setMessages}:{setMessages: React.Dispatch<React.SetStateAction
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (values.message === "") return;
 
-    const newMessage:MessageTypes = {
+    const newMessage: MessageTypes = {
       sender: authUser,
       receiver,
       content: values.message,
-      time: new Date().toISOString()
-    }
-    queryClient.setQueryData<MessageTypes[] | undefined>('messages', old => [...(old || []), newMessage])
-    setMessages(prevMessages => [...prevMessages, newMessage]);
+      time: new Date().toISOString(),
+    };
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
     socket.emit("send-message", newMessage);
+    queryClient.invalidateQueries();
     form.reset();
   }
 
   return (
     <div className="px-3 py-4 bg-primary flex items-center">
-      <Button className="text-RcMsgBg3" >
-        <Smile width={30} height={30}/>
+      <Button className="text-RcMsgBg3">
+        <Smile width={30} height={30} />
       </Button>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex gap-2 items-center w-full"
         >
-      
           <FormField
             control={form.control}
             name="message"

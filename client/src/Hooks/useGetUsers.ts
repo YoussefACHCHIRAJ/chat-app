@@ -9,7 +9,7 @@ const useGetUsers = () => {
   const dispatch = useDispatch();
   const { user: authUser } = useClerk();
 
-  const results = useQuery({
+  const query = useQuery({
     queryKey: ["usersList"],
     queryFn: async () => {
       try {
@@ -30,7 +30,7 @@ const useGetUsers = () => {
     },
   });
 
-  return results;
+  return query;
 };
 
 export default useGetUsers;

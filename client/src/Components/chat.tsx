@@ -20,7 +20,13 @@ const Chat = ({ setOpenBlock, setOpenClearChat }: CurrentUserChatProps) => {
   const chatRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<MessageTypes[]>([]);
 
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false, // default: true
+      },
+    },
+  });
 
   const {
     data: messagesFetched,
@@ -41,10 +47,8 @@ const Chat = ({ setOpenBlock, setOpenClearChat }: CurrentUserChatProps) => {
     const handleReceiveMessage = (newMessage: MessageTypes) => {
       console.log("Received new message:", newMessage);
       setMessages((prevMessages) => [...prevMessages, newMessage]);
-      queryClient.setQueryData<MessageTypes[] | undefined>(
-        "messages",
-        (old) => [...(old || []), newMessage]
-      );
+      queryClient.invalidateQueries();
+
     };
 
     socket.on("receive-message", handleReceiveMessage);
@@ -74,15 +78,15 @@ const Chat = ({ setOpenBlock, setOpenClearChat }: CurrentUserChatProps) => {
           <ErrorMessageModal />
         ) : (
           messages?.map((message) => {
-            // const { receiver: messageReceiver, sender: messageSender } =
-            //   message;
-            // const isMessageInChatRoom =
-            //   (receiver?.userId === messageReceiver?.userId &&
-            //     authUser?.userId === messageSender?.userId) ||
-            //   (authUser?.userId === messageReceiver?.userId &&
-            //     receiver?.userId === messageSender?.userId);
+            const { receiver: messageReceiver, sender: messageSender } =
+              message;
+            const isMessageInChatRoom =
+              (receiver?.userId === messageReceiver?.userId &&
+                authUser?.userId === messageSender?.userId) ||
+              (authUser?.userId === messageReceiver?.userId &&
+                receiver?.userId === messageSender?.userId);
 
-            // if (isMessageInChatRoom)
+            if (isMessageInChatRoom)
               return (
                 <Message
                   key={new Date(message.time).getTime()}

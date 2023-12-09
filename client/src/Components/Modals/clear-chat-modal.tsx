@@ -8,8 +8,9 @@ import {
 } from "@/Components/ui/dialog";
 import { Button } from "@/Components/ui/button";
 import useClearConversation from "@/Hooks/useClearConversation";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/Redux/store";
+import { setReceiver } from "@/Redux/Receiver/receiverSlice";
 // import { QueryClient } from "react-query";
 
 interface ClearChatModalProps {
@@ -23,14 +24,15 @@ const ClearChatModal = ({
 }: ClearChatModalProps) => {
   const authUser = useSelector((state: RootState) => state.authUser.value);
   const { clearConversation, errors, isLoading } = useClearConversation();
-  // const queryClient = new QueryClient()
+  const receiver = useSelector((state: RootState) => state.receiver.value);
+  const dispatch = useDispatch();
 
   const clearChatConversation = () => {
     clearConversation(authUser?._id as string);
-    // queryClient.setQueryData('messages', [])
     
     if(!errors) {
       setOpenClearChat(false);
+      dispatch(setReceiver(null));
     }
     else console.log("[failed clear chat: ", errors);
     
@@ -43,7 +45,7 @@ const ClearChatModal = ({
           <DialogDescription className="space-y-2 text-lightGray text-md">
             Are you sure you want clear the conversation with{" "}
             <span className="text-white font-semibold">
-              user name
+             {receiver?.username}
             </span>{" "}
             ?
           </DialogDescription>

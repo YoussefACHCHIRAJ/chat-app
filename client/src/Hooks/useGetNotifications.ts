@@ -1,18 +1,9 @@
-import { useEffect, useState } from "react";
-
-interface notificationType {
-    sender:string;
-     count:number
-}
+import { useQuery } from "react-query";
 
 const useGetNotification = (userId: string) => {
-  const [notifications, setNotifications] = useState<notificationType[] | []>([]);
-  const [errors, setErrors] = useState<unknown>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const getNotifications = async () => {
-      setIsLoading(true);
+  const query = useQuery({
+    queryKey: ["notifications", { userId }],
+    queryFn: async () => {
       try {
         const response = await fetch(
           `http://localhost:8080/notifications/${userId}`
@@ -21,17 +12,13 @@ const useGetNotification = (userId: string) => {
         if (!response.ok) throw new Error("failed fetching notifications.");
 
         const result = await response.json();
-        setNotifications(result.notifications);
+        return result.notifications;
       } catch (error) {
-        setErrors(error);
-      } finally {
-        setIsLoading(false);
+        throw new Error("failed fetching notifications.");
       }
-    };
-    getNotifications();
-  }, []);
-  return { notifications, errors, isLoading };
+    },
+  });
+  return query;
 };
-
 
 export default useGetNotification;

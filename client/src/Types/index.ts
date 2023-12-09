@@ -8,7 +8,7 @@ export interface MessageTypes {
   time: string;
 }
 
-export interface Notification {
+export interface NotificationType {
   receiver: string,
   sender: string,
   count: number,

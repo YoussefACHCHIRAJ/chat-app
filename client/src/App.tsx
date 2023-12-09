@@ -7,7 +7,7 @@ import {
 } from "@clerk/clerk-react";
 
 import { QueryClient, QueryClientProvider } from "react-query";
-
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 
 if (!import.meta.env.VITE_REACT_APP_CLERK_PUBLISHABLE_KEY) {
@@ -26,6 +26,7 @@ export default function Home() {
         <div className="h-[100vh]">
           <ChatPage />
         </div>
+        <ReactQueryDevtools initialIsOpen={true} />
         </QueryClientProvider>
       </SignedIn>
       <SignedOut>

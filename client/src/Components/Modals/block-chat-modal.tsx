@@ -7,6 +7,8 @@ import {
   DialogTitle,
 } from "@/Components/ui/dialog";
 import { Button } from "@/Components/ui/button";
+import { useSelector } from "react-redux";
+import { RootState } from "@/Redux/store";
 
 interface BlockChatModalProps {
   openBlock: boolean;
@@ -14,6 +16,7 @@ interface BlockChatModalProps {
 }
 
 const BlockChatModal = ({  openBlock, setOpenBlock }: BlockChatModalProps) => {
+  const receiver = useSelector((state: RootState) => state.receiver.value);
   return (
     <Dialog open={openBlock} onOpenChange={() => setOpenBlock(false)}>
       <DialogContent className="bg-primary text-white">
@@ -22,11 +25,11 @@ const BlockChatModal = ({  openBlock, setOpenBlock }: BlockChatModalProps) => {
           <DialogDescription className="space-y-2 text-lightGray text-md">
             Are you sure you want block{" "}
             <span className="text-white font-semibold">
-              user name
+              {receiver?.username}
             </span>{" "}
             ? <br />
             <span className="text-white font-semibold">
-              user name
+            {receiver?.username}
             </span>{" "}
             can not be able to send you a messages.
           </DialogDescription>
