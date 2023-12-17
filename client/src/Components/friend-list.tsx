@@ -12,7 +12,6 @@ interface FriendListProps {
 }
 
 const FriendList = ({ onlineUsers, authUser }: FriendListProps) => {
-
   const {
     data: users,
     isLoading: isUsersLoading,
@@ -30,13 +29,11 @@ const FriendList = ({ onlineUsers, authUser }: FriendListProps) => {
   useEffect(() => {
     socket.on("refresh-notifications", () => {
       refetch();
-      console.log("notification has been refetched");
     });
-
     return () => {
       socket.off("refresh-notifications");
     };
-  }, [authUser._id, refetch]);
+  }, []);
 
   if (isNotificationsLoading) {
     console.log("notifications loading ....");
@@ -68,6 +65,7 @@ const FriendList = ({ onlineUsers, authUser }: FriendListProps) => {
                 user={user}
                 isOnline={isOnline}
                 notification={notification}
+                refetchNotifications={refetch}
               />
             );
         })

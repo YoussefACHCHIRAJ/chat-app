@@ -5,7 +5,6 @@ import { MessageTypes } from "@/Types";
 import { useSelector } from "react-redux";
 import { RootState } from "@/Redux/store";
 import { socket } from "@/Pages";
-import { QueryClient } from "react-query";
 import { ErrorMessageModal, LoadingModal } from "./Modals";
 import { CurrentUserChat, Message, SendBox } from ".";
 
@@ -20,35 +19,24 @@ const Chat = ({ setOpenBlock, setOpenClearChat }: CurrentUserChatProps) => {
   const chatRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<MessageTypes[]>([]);
 
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false, // default: true
-      },
-    },
-  });
-
   const {
     data: messagesFetched,
     isError,
     isLoading,
+    refetch
   } = useGetMessages(authUser?._id as string, receiver?._id as string);
 
   // Effect for fetching messages when component mounts
   useEffect(() => {
     setMessages(messagesFetched);
-    console.log({ messagesState: messages });
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messagesFetched]);
 
   // Effect for listening to new messages via Socket.IO
   useEffect(() => {
     const handleReceiveMessage = (newMessage: MessageTypes) => {
-      console.log("Received new message:", newMessage);
       setMessages((prevMessages) => [...prevMessages, newMessage]);
-      queryClient.invalidateQueries();
-
+      refetch();
     };
 
     socket.on("receive-message", handleReceiveMessage);

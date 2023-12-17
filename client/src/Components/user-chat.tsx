@@ -3,16 +3,18 @@ import { cn } from "@/lib/utils";
 import { setReceiver } from "@/Redux/Receiver/receiverSlice";
 import { RootState } from "@/Redux/store";
 import { NotificationType, UserType } from "@/Types";
+import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 
 interface userChatType {
   user: UserType;
   isOnline: boolean;
   closeModal?: React.Dispatch<React.SetStateAction<boolean>>;
-  notification: NotificationType
+  notification: NotificationType;
+  refetchNotifications: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<unknown, unknown>>
 }
 
-const UserChat = ({ closeModal, user, isOnline ,notification }: userChatType) => {
+const UserChat = ({ closeModal, user, isOnline ,notification, refetchNotifications }: userChatType) => {
   const dispatch = useDispatch();
   const receiver = useSelector((state: RootState) => state.receiver.value);
   const authUser = useSelector((state: RootState) => state.authUser.value);
@@ -25,14 +27,13 @@ const UserChat = ({ closeModal, user, isOnline ,notification }: userChatType) =>
       receiver?._id !== notification?.sender &&
       notification?.count !== 0
 
-      console.log({ isunread });
-
   const handleSelectReceiver = () => {
     dispatch(setReceiver(user));
     deleteNotification({
       receiver: authUser?._id as string,
       sender: user?._id as string,
     });
+    refetchNotifications();
     closeModal && closeModal(false);
   };
 
