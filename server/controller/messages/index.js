@@ -5,9 +5,6 @@ const getAll = async (req, res) => {
     const loggedInUser = req.params.loggedInUser;
     const recipient = req.query.recipient;
     try {
-        const loggedInUserId = new mongoose.Types.ObjectId(loggedInUser);
-        const recipientId = new mongoose.Types.ObjectId(recipient);
-
         const messages = await Message.find({
             $or : [
                 {sender: loggedInUser, receiver: recipient, isDeletedBySender: {$ne: true}},

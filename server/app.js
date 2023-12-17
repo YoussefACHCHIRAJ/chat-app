@@ -71,8 +71,8 @@ const runChatServer = () => {
 
             await storeNotifications(sender, receiver);
             io.emit("refresh-notifications");
-            console.log("notifications has been refetch.")
-        })
+        });
+
         socket.on('disconnect', () => {
             users.forEach((socketStored, userId) => {
                 if (socketStored === socket) {
@@ -90,16 +90,16 @@ module.exports = app;
 
 /* Task To Do : 
    -----------------------------------------------------------
-    + Send a unicast message. [done]
-    + Indicate oline users. [done]
-    + Clear individual chat from one side (sender/receiver). [done] \in the test mode....
-    + Set notifications. => [bug to fix ] : if the receiver in the chat room don't save the notification.
-    + Convert a fetch requests to axios requests.
-    + Add indexes to the database.
-    + Indicate the last message in the friends list.
-    + Add lazy loading.
-    + Search for a user.
-    + Manage contacts.
-    + Block a user.
+[done]+ Send a unicast message. 
+[done]+ Indicate oline users. 
+[done]+ Clear individual chat from one side (sender/receiver).
+[bug] + Set notifications. => [bug to fix ] : if the receiver in the chat room don't save the notification.
+      + Convert a fetch requests to axios requests.
+      + Add indexes to the database.
+      + Indicate the last message in the friends list.
+      + Add lazy loading.
+      + Search for a user.
+      + Manage contacts.
+      + Block a user.
 
 */

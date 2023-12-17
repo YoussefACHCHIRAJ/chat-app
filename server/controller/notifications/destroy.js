@@ -13,7 +13,6 @@ const deleteNotification = async (req, res) => {
         }, { count: 0 }
         )
 
-        console.log({ deleteResult, authUser, sender });
         res.json({ deleteNotify: true });
     } catch (error) {
         console.log('[deleteNotification]: ', error);
