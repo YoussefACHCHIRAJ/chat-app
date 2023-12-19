@@ -23,18 +23,14 @@ const ClearChatModal = ({
   setOpenClearChat,
 }: ClearChatModalProps) => {
   const authUser = useSelector((state: RootState) => state.authUser.value);
-  const { clearConversation, errors, isLoading } = useClearConversation();
+  const { mutate: clearConversation } = useClearConversation();
   const receiver = useSelector((state: RootState) => state.receiver.value);
   const dispatch = useDispatch();
 
   const clearChatConversation = () => {
     clearConversation(authUser?._id as string);
-    
-    if(!errors) {
       setOpenClearChat(false);
       dispatch(setReceiver(null));
-    }
-    else console.log("[failed clear chat: ", errors);
     
   }
   return (
@@ -58,7 +54,6 @@ const ClearChatModal = ({
             className="font-semibold tracking-wider text-md"
             variant="destructive"
             onClick={clearChatConversation}
-            disabled={isLoading}
           >
             Clear
           </Button>

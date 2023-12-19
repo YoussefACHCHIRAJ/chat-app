@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useQuery } from "react-query";
 
 const useGetNotification = (userId: string) => {
@@ -5,14 +6,9 @@ const useGetNotification = (userId: string) => {
     queryKey: ["notifications", { userId }],
     queryFn: async () => {
       try {
-        const response = await fetch(
-          `http://localhost:8080/notifications/${userId}`
-        );
+        const {data} = await axios(`http://localhost:8080/notifications/${userId}`);
 
-        if (!response.ok) throw new Error("failed fetching notifications.");
-
-        const result = await response.json();
-        return result.notifications;
+        return data.notifications;
       } catch (error) {
         throw new Error("failed fetching notifications.");
       }

@@ -1,6 +1,7 @@
 import { setAuthUser } from "@/Redux/AuthUser/authUserSlice";
 import { UserType } from "@/Types";
 import { useClerk } from "@clerk/clerk-react";
+import axios from "axios";
 // import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
@@ -13,17 +14,15 @@ const useGetUsers = () => {
     queryKey: ["usersList"],
     queryFn: async () => {
       try {
-        const response = await fetch("http://localhost:8080/userslist");
-        if (!response.ok) throw new Error("failed get users");
-        const result = await response.json();
+        const { data } = await axios.get("http://localhost:8080/userslist");
 
-        // set auth user globally
+        // // set auth user globally
         dispatch(
           setAuthUser(
-            result.users.find((user: UserType) => user.userId === authUser?.id)
+            data.users.find((user: UserType) => user.userId === authUser?.id)
           )
         );
-        return result.users;
+        return data.users;
       } catch (error) {
         throw new Error("failed get users");
       }

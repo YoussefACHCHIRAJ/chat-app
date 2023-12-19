@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useMutation } from "react-query";
 
 type NotificationParamsDataType = {
@@ -10,15 +11,8 @@ const useDeleteNotification = () => {
     async ({receiver, sender}) => {
     
       try {
-        const response = await fetch(
-          `http://localhost:8080/notifications/${receiver}?sender=${sender}`,
-          { method: "DELETE" }
-        );
-
-        if (!response.ok) throw new Error("failed fetching notifications.");
-
-        const result = await response.json();
-        return result.deleteNotify;
+        const {data} = await axios.delete(`http://localhost:8080/notifications/${receiver}?sender=${sender}`)
+        return data.deleteNotify;
       } catch (error) {
         throw new Error("failed fetching notifications.");
       }
