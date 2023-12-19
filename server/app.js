@@ -70,7 +70,7 @@ const runChatServer = () => {
             await storeMessages(newMessage);
 
             await storeNotifications(sender, receiver);
-            io.emit("refresh-notifications");
+            io.emit("refresh-notifications", sender);
         });
 
         socket.on('disconnect', () => {
@@ -93,7 +93,7 @@ module.exports = app;
 [done]+ Send a unicast message. 
 [done]+ Indicate oline users. 
 [done]+ Clear individual chat from one side (sender/receiver).
-[bug] + Set notifications. => [bug to fix ] : if the receiver in the chat room don't save the notification.
+[done]+ Set notifications. 
       + Convert a fetch requests to axios requests.
       + Add indexes to the database.
       + Indicate the last message in the friends list.
