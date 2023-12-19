@@ -24,7 +24,7 @@ const UserChat = ({ closeModal, user, isOnline ,notification, refetchNotificatio
   
   const isunread =
       user?._id === notification?.sender &&
-      receiver?._id !== notification?.sender &&
+      // receiver?._id !== notification?.sender &&
       notification?.count !== 0
 
   const handleSelectReceiver = () => {

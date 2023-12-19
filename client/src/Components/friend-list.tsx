@@ -5,6 +5,9 @@ import { UserListSkeleton } from ".";
 import useGetNotification from "@/Hooks/useGetNotifications";
 import { useEffect } from "react";
 import { socket } from "@/Pages";
+import { useSelector } from "react-redux";
+import { RootState } from "@/Redux/store";
+import useDeleteNotification from "@/Hooks/useDeleteNotifications";
 
 interface FriendListProps {
   onlineUsers: string[];
@@ -12,6 +15,7 @@ interface FriendListProps {
 }
 
 const FriendList = ({ onlineUsers, authUser }: FriendListProps) => {
+  const receiver = useSelector((state: RootState) => state.receiver.value);
   const {
     data: users,
     isLoading: isUsersLoading,
@@ -26,8 +30,17 @@ const FriendList = ({ onlineUsers, authUser }: FriendListProps) => {
     refetch,
   } = useGetNotification(authUser?._id as string);
 
+  const { mutate: deleteNotification } = useDeleteNotification();
+
   useEffect(() => {
-    socket.on("refresh-notifications", () => {
+    socket.on("refresh-notifications", (sender) => {
+      if (receiver?._id == sender._id) {
+        deleteNotification({
+          receiver: authUser?._id as string,
+          sender: sender._id,
+        });
+      }
+
       refetch();
     });
     return () => {

@@ -19,6 +19,7 @@ const ChatPage = () => {
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
   /**End Declaration **/
 
+  
   useEffect(() => {
     socket.emit("log-in", authUser?.userId);
   }, [authUser?.userId]);
