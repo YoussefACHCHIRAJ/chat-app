@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "chat application backend",
   "main": "server.js",
-  "scripts": {},
+  "scripts": {
+    "dev": "node --watch app.js"
+  },
   "author": "Youssef",
   "license": "ISC",
   "dependencies": {

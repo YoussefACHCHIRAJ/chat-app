@@ -1,4 +1,3 @@
-const { default: mongoose } = require("mongoose");
 const Message = require("../../models/Message");
 
 const getAll = async (req, res) => {
