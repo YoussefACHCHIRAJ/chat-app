@@ -9,12 +9,12 @@ import {
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from 'react-query/devtools'
 
-
-if (!import.meta.env.VITE_REACT_APP_CLERK_PUBLISHABLE_KEY) {
-  throw new Error("Missing Publishable Key");
-}
 const clerkPubKey = import.meta.env.VITE_REACT_APP_CLERK_PUBLISHABLE_KEY;
 const queryClient = new QueryClient();
+
+if (!clerkPubKey) {
+  throw new Error("Missing Publishable Key");
+}
 
 export default function Home() {
 

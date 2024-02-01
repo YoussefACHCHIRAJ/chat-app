@@ -29,7 +29,6 @@ const Chat = ({ setOpenBlock, setOpenClearChat }: CurrentUserChatProps) => {
   // Effect for fetching messages when component mounts
   useEffect(() => {
     setMessages(messagesFetched);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messagesFetched]);
 
   // Effect for listening to new messages via Socket.IO
@@ -44,7 +43,7 @@ const Chat = ({ setOpenBlock, setOpenClearChat }: CurrentUserChatProps) => {
     return () => {
       socket.off("receive-message");
     };
-  }, []);
+  }, [refetch]);
 
   // Effect for scrolling to the bottom when messages change
   useEffect(() => {

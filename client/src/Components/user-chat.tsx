@@ -1,4 +1,5 @@
 import useDeleteNotification from "@/Hooks/useDeleteNotifications";
+import useGetLastMessages from "@/Hooks/useGetLastMessages";
 import { cn } from "@/lib/utils";
 import { setReceiver } from "@/Redux/Receiver/receiverSlice";
 import { RootState } from "@/Redux/store";
@@ -19,12 +20,14 @@ const UserChat = ({ closeModal, user, isOnline ,notification, refetchNotificatio
   const receiver = useSelector((state: RootState) => state.receiver.value);
   const authUser = useSelector((state: RootState) => state.authUser.value);
   const { mutate: deleteNotification } = useDeleteNotification();
-  
+  const {data: lastMessages} = useGetLastMessages(authUser?._id as string);
+
+  console.log({lastMessages});
 
   
   const isunread =
       user?._id === notification?.sender &&
-      // receiver?._id !== notification?.sender &&
+      receiver?._id !== notification?.sender &&
       notification?.count !== 0
 
   const handleSelectReceiver = () => {
@@ -65,6 +68,7 @@ const UserChat = ({ closeModal, user, isOnline ,notification, refetchNotificatio
       </div>
       <div className="flex-1">
         <h3 className={cn(` capitalize text-white`)}>{user?.username}</h3>
+        <p className="text-gray-100 text-xs truncate w-48">Sent You: Hi feafaef fa fae faefa efaef aef ae</p>
       </div>
       {isunread && (
         <p className="bg-green text-white font-bold rounded-full text-center w-5 h-5">

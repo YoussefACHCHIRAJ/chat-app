@@ -34,13 +34,6 @@ const FriendList = ({ onlineUsers, authUser }: FriendListProps) => {
 
   useEffect(() => {
     socket.on("refresh-notifications", (sender) => {
-      console.log("selected receiver: ", receiver?.username, receiver?._id);
-      console.log("message sender: ", sender?.username, sender?._id);
-      console.log(
-        "sender is the selected receiver? ",
-        receiver?._id === sender._id
-      );
-
       if (receiver?._id == sender._id) {
         deleteNotification({
           receiver: authUser?._id as string,
@@ -53,7 +46,7 @@ const FriendList = ({ onlineUsers, authUser }: FriendListProps) => {
     return () => {
       socket.off("refresh-notifications");
     };
-  }, []);
+  }, [authUser?._id, deleteNotification, receiver?._id, refetch]);
 
   if (isNotificationsLoading) {
     console.log("notifications loading ....");
