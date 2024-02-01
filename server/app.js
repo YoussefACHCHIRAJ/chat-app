@@ -14,7 +14,6 @@ const userRoute = require("./routes/user.js");
 
 
 
-const users = new Map();
 
 
 const app = express();
@@ -30,6 +29,8 @@ const PORT = process.env.PORT;
 
 mongoose.connect(DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(res => {
+
+        console.log('Connected succefuly');
         console.log('server running');
         /* chat server */
         runChatServer();
@@ -50,6 +51,7 @@ const runChatServer = () => {
             origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'],
         },
     });
+    const users = new Map();
 
     io.on('connection', socket => {
 
@@ -90,16 +92,16 @@ module.exports = app;
 
 /* Task To Do : 
    -----------------------------------------------------------
-[done]+ Send a unicast message. 
-[done]+ Indicate oline users. 
-[done]+ Clear individual chat from one side (sender/receiver).
-[done]+ Set notifications. 
-      + Convert a fetch requests to axios requests.
-      + Add indexes to the database.
-      + Indicate the last message in the friends list.
-      + Add lazy loading.
-      + Search for a user.
-      + Manage contacts.
-      + Block a user.
+[done] + Send a unicast message. 
+[done] + Indicate oline users. 
+[done] + Clear individual chat from one side (sender/receiver).
+[done] + Set notifications. 
+[done] + Convert a fetch requests to axios requests.
+       + Indicate the last message in the friends list.
+       + Block a user.
+       + Add lazy loading.
+       + Search for a user.
+       + Manage contacts.
+       + Add indexes to the database.
 
 */

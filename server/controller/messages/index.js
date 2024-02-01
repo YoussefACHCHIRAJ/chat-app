@@ -1,13 +1,15 @@
+const { default: mongoose } = require("mongoose");
 const Message = require("../../models/Message");
 
 const getAll = async (req, res) => {
-    const loggedInUser = req.params.loggedInUser;
-    const recipient = req.query.recipient;
     try {
+        const authUser =  new mongoose.Types.ObjectId(req.params.authUser);
+        const recipient = new mongoose.Types.ObjectId(req.query.recipient);
+        
         const messages = await Message.find({
             $or : [
-                {sender: loggedInUser, receiver: recipient, isDeletedBySender: {$ne: true}},
-                {sender: recipient, receiver: loggedInUser, isDeletedByReceiver: {$ne: true}}
+                {sender: authUser, receiver: recipient, isDeletedBySender: {$ne: true}},
+                {sender: recipient, receiver: authUser, isDeletedByReceiver: {$ne: true}}
             ]
         })
             .populate('sender')
