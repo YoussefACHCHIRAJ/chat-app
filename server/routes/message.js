@@ -4,9 +4,9 @@ const getAll = require("../controller/messages");
 const getLastMessages = require('../controller/messages/getLastMessages');
 const {destroyAll} = require("../controller/messages/destroy");
 
-router.get('/messages/:authUser', getAll);
-router.get('/messages/lastMessage/:authUser', getLastMessages);
-router.delete('/messages/:authUser', destroyAll);
+router.get('/:authUser', getAll);
+router.get('/lastMessage/:authUser', getLastMessages);
+router.delete('/:authUser', destroyAll);
 
 
 module.exports = router;

@@ -4,8 +4,8 @@ const router = require('express').Router();
 const getAll = require("../controller/notifications");
 const destroy = require("../controller/notifications/destroy");
 
-router.get('/notifications/:id', getAll);
-router.delete("/notifications/:authUser", destroy);
+router.get('/:id', getAll);
+router.delete("/:authUser", destroy);
 
 
 module.exports = router;
