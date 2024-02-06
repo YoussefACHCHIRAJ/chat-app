@@ -29,11 +29,13 @@ const SendBox = ({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (values.message === "") return;
 
+    const chat = [authUser?._id, receiver?._id].sort().join("");
     const newMessage: MessageTypes = {
       sender: authUser,
       receiver,
       content: values.message,
       time: new Date().toISOString(),
+      chat
     };
     setMessages((prevMessages) => [...prevMessages, newMessage]);
     socket.emit("send-message", newMessage);

@@ -1,9 +1,8 @@
 import useDeleteNotification from "@/Hooks/useDeleteNotifications";
-import useGetLastMessages from "@/Hooks/useGetLastMessages";
 import { cn } from "@/lib/utils";
 import { setReceiver } from "@/Redux/Receiver/receiverSlice";
 import { RootState } from "@/Redux/store";
-import { NotificationType, UserType } from "@/Types";
+import { MessageTypes, NotificationType, UserType } from "@/Types";
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -13,18 +12,15 @@ interface userChatType {
   closeModal?: React.Dispatch<React.SetStateAction<boolean>>;
   notification: NotificationType;
   refetchNotifications: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<unknown, unknown>>
+  lastMessage: MessageTypes
 }
 
-const UserChat = ({ closeModal, user, isOnline ,notification, refetchNotifications }: userChatType) => {
+const UserChat = ({ closeModal, user, isOnline ,notification, refetchNotifications, lastMessage }: userChatType) => {
   const dispatch = useDispatch();
   const receiver = useSelector((state: RootState) => state.receiver.value);
   const authUser = useSelector((state: RootState) => state.authUser.value);
   const { mutate: deleteNotification } = useDeleteNotification();
-  const {data: lastMessages} = useGetLastMessages(authUser?._id as string);
 
-  console.log({lastMessages});
-
-  
   const isunread =
       user?._id === notification?.sender &&
       receiver?._id !== notification?.sender &&
@@ -39,7 +35,6 @@ const UserChat = ({ closeModal, user, isOnline ,notification, refetchNotificatio
     refetchNotifications();
     closeModal && closeModal(false);
   };
-
   return (
     <div
       onClick={handleSelectReceiver}
@@ -68,7 +63,8 @@ const UserChat = ({ closeModal, user, isOnline ,notification, refetchNotificatio
       </div>
       <div className="flex-1">
         <h3 className={cn(` capitalize text-white`)}>{user?.username}</h3>
-        <p className="text-gray-100 text-xs truncate w-48">Sent You: Hi feafaef fa fae faefa efaef aef ae</p>
+        { lastMessage !== null && (<p className="text-gray-200 text-xs truncate w-48">
+          {lastMessage?.sender !== authUser?._id && "Sent"} You: {lastMessage?.content}</p>)}
       </div>
       {isunread && (
         <p className="bg-green text-white font-bold rounded-full text-center w-5 h-5">

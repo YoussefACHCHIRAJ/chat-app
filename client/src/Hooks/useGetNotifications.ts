@@ -1,12 +1,16 @@
+import { RootState } from "@/Redux/store";
 import axios from "axios";
 import { useQuery } from "react-query";
+import { useSelector } from "react-redux";
 
-const useGetNotification = (userId: string) => {
+const useGetNotification = () => {
+
+  const authUser = useSelector((state: RootState) => state.authUser.value);
   const query = useQuery({
-    queryKey: ["notifications", { userId }],
+    queryKey: ["notifications", { authUser }],
     queryFn: async () => {
       try {
-        const {data} = await axios(`http://localhost:8080/notifications/${userId}`);
+        const {data} = await axios(`http://localhost:8080/notifications/${authUser?._id}`);
 
         return data.notifications;
       } catch (error) {

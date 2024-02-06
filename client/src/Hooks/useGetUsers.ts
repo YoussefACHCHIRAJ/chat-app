@@ -14,9 +14,9 @@ const useGetUsers = () => {
     queryKey: ["usersList"],
     queryFn: async () => {
       try {
-        const { data } = await axios.get("http://localhost:8080/userslist");
+        const { data } = await axios.get("http://localhost:8080/users/list");
 
-        // // set auth user globally
+        // set auth user globally
         dispatch(
           setAuthUser(
             data.users.find((user: UserType) => user.userId === authUser?.id)

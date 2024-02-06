@@ -1,6 +1,6 @@
 import UserChat from "./user-chat";
 import useGetUsers from "@/Hooks/useGetUsers";
-import { NotificationType, UserType } from "@/Types";
+import { NotificationType, UserType, lastMessageType } from "@/Types";
 import { UserListSkeleton } from ".";
 import useGetNotification from "@/Hooks/useGetNotifications";
 import { useEffect } from "react";
@@ -8,6 +8,7 @@ import { socket } from "@/Pages";
 import { useSelector } from "react-redux";
 import { RootState } from "@/Redux/store";
 import useDeleteNotification from "@/Hooks/useDeleteNotifications";
+import useGetLastMessages from "@/Hooks/useGetLastMessages";
 
 interface FriendListProps {
   onlineUsers: string[];
@@ -27,8 +28,10 @@ const FriendList = ({ onlineUsers, authUser }: FriendListProps) => {
     data: notifications,
     isError: isNotificationsError,
     isLoading: isNotificationsLoading,
-    refetch,
-  } = useGetNotification(authUser?._id as string);
+    refetch: refetchNotifcations,
+  } = useGetNotification();
+  const { data: lastMessages, refetch: refetchLastMessages } = useGetLastMessages();
+  console.log({lastMessages});
 
   const { mutate: deleteNotification } = useDeleteNotification();
 
@@ -40,13 +43,13 @@ const FriendList = ({ onlineUsers, authUser }: FriendListProps) => {
           sender: sender._id,
         });
       }
-      refetch();
-
+      refetchNotifcations();
+      refetchLastMessages();
     });
     return () => {
       socket.off("refresh-notifications");
     };
-  }, [authUser?._id, deleteNotification, receiver?._id, refetch]);
+  }, [authUser?._id, deleteNotification, receiver?._id, refetchNotifcations]);
 
   if (isNotificationsLoading) {
     console.log("notifications loading ....");
@@ -67,9 +70,12 @@ const FriendList = ({ onlineUsers, authUser }: FriendListProps) => {
       ) : users?.length > 0 ? (
         users?.map((user: UserType) => {
           const isOnline = onlineUsers.includes(user?.userId as string);
-          const notification = notifications.find(
+          const notification = notifications?.find(
             (notification: NotificationType) =>
-              user?._id === notification.sender
+              user?._id === notification?.sender
+          );
+          const lastMessage = lastMessages?.find(
+            (lastMessage: lastMessageType) => (lastMessage.friend._id === user?._id)
           );
           if (user.userId !== authUser?.userId)
             return (
@@ -78,7 +84,8 @@ const FriendList = ({ onlineUsers, authUser }: FriendListProps) => {
                 user={user}
                 isOnline={isOnline}
                 notification={notification}
-                refetchNotifications={refetch}
+                refetchNotifications={refetchNotifcations}
+                lastMessage={lastMessage?.lastMessage}
               />
             );
         })
