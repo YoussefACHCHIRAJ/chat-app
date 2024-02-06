@@ -10,6 +10,10 @@ const MessageSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
+    chat: {
+        type: Schema.Types.ObjectId,
+        ref: 'Chat'
+    },
     isDeletedBySender: {
         type: Boolean,
         default: false

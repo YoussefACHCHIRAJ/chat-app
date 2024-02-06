@@ -63,11 +63,11 @@ module.exports = { app, runChatServer };
 [done] + Clear individual chat from one side (sender/receiver).
 [done] + Set notifications. 
 [done] + Convert a fetch requests to axios requests.
-       + Indicate the last message in the friends list.
+[done] + Indicate the last message in the friends list.
        + Block a user.
-       + Add lazy loading.
        + Search for a user.
        + Manage contacts.
+       + Add lazy loading.
        + Add indexes to the database.
 
 */

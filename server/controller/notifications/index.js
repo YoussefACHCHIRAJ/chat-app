@@ -3,10 +3,7 @@ const Notification = require("../../models/Notification");
 
 const getNotifications = async (req, res) => {
     try {
-
-        const authUser = new mongoose.Types.ObjectId(req.params.id);
-        console.log({authUser});
-
+        const authUser = new mongoose.Types.ObjectId(req.params.authUser);
         const notifications = await Notification.find({receiver: authUser});
         res.json({notifications});
 
