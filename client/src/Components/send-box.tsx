@@ -10,12 +10,12 @@ import { Send, Smile } from "lucide-react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/Redux/store";
 import { socket } from "@/Pages";
-import { MessageTypes } from "@/Types";
+import { MessageTypes, UserType } from "@/Types";
 
 const SendBox = ({
   setMessages,
 }: {
-  setMessages: React.Dispatch<React.SetStateAction<MessageTypes[]>>;
+  setMessages: React.Dispatch<React.SetStateAction<MessageTypes<UserType | null>[]>>;
 }) => {
   const receiver = useSelector((state: RootState) => state.receiver.value);
   const authUser = useSelector((state: RootState) => state.authUser.value);
@@ -30,7 +30,7 @@ const SendBox = ({
     if (values.message === "") return;
 
     const chat = [authUser?._id, receiver?._id].sort().join("");
-    const newMessage: MessageTypes = {
+    const newMessage: MessageTypes<UserType | null> = {
       sender: authUser,
       receiver,
       content: values.message,

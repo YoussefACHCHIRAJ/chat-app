@@ -2,7 +2,7 @@ import { Ban, Trash, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/Redux/store";
 import { setReceiver } from "@/Redux/Receiver/receiverSlice";
-import { ShareMediaModal } from "./Modals";
+import { ShareMediaModel } from "./Models";
 
 interface CurrentUserChatProps {
   setOpenBlock: React.Dispatch<React.SetStateAction<boolean>>
@@ -27,7 +27,7 @@ const CurrentUserChat = ({setOpenBlock, setOpenClearChat}:CurrentUserChatProps) 
         <p className='font-light text-xs text-gray-200'>{receiver?.email}</p>
       </div>
       <div className="ml-auto text-white pr-4 flex items-center gap-6">
-        <ShareMediaModal />
+        <ShareMediaModel />
         <button onClick={() => setOpenBlock(true)}><Ban /></button>
         <button onClick={() => {setOpenClearChat(true)}}><Trash /></button>
         <button onClick={() => dispatch(setReceiver(null))}><X /></button>

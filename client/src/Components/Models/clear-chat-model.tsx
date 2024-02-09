@@ -11,24 +11,22 @@ import useClearConversation from "@/Hooks/useClearConversation";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/Redux/store";
 import { setReceiver } from "@/Redux/Receiver/receiverSlice";
-// import { QueryClient } from "react-query";
 
-interface ClearChatModalProps {
+interface ClearChatModelProps {
   openClearChat: boolean;
   setOpenClearChat: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ClearChatModal = ({
+const ClearChatModel = ({
   openClearChat,
   setOpenClearChat,
-}: ClearChatModalProps) => {
-  const authUser = useSelector((state: RootState) => state.authUser.value);
+}: ClearChatModelProps) => {
   const { mutate: clearConversation } = useClearConversation();
   const receiver = useSelector((state: RootState) => state.receiver.value);
   const dispatch = useDispatch();
 
   const clearChatConversation = () => {
-    clearConversation(authUser?._id as string);
+    clearConversation();
       setOpenClearChat(false);
       dispatch(setReceiver(null));
     
@@ -63,4 +61,4 @@ const ClearChatModal = ({
   );
 };
 
-export default ClearChatModal;
+export default ClearChatModel;

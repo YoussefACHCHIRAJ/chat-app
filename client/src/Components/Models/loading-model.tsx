@@ -1,4 +1,4 @@
-const LoadingModal = () => {
+const LoadingModel = () => {
   return (
     <div  className=" flex justify-center h-full items-center flex-col">
         <svg
@@ -22,4 +22,4 @@ const LoadingModal = () => {
   )
 }
 
-export default LoadingModal
+export default LoadingModel

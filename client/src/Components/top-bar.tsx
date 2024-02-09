@@ -4,18 +4,23 @@ import { RootState } from "@/Redux/store";
 import { UserButton } from "@clerk/clerk-react";
 import { cn } from "@/lib/utils";
 import { CurrentUserChat } from ".";
-import OptionsModal from "./Modals/options-modal";
+import OptionsModal from "./Models/options-model";
 interface CurrentUserChatProps {
-  setOpenBlock: React.Dispatch<React.SetStateAction<boolean>>
-  setOpenClearChat: React.Dispatch<React.SetStateAction<boolean>>
-}
-const TopBar = ({setOpenBlock, setOpenClearChat}:CurrentUserChatProps) => {
+  setOpenBlock: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenClearChat: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenUpdateProfile: React.Dispatch<React.SetStateAction<boolean>>;
   
-
+}
+const TopBar = ({ setOpenBlock, setOpenClearChat, setOpenUpdateProfile }: CurrentUserChatProps) => {
   const dispatch = useDispatch();
   const receiver = useSelector((state: RootState) => state.receiver.value);
   return (
-    <div className={cn("w-full h-12 md:hidden bg-primary items-center flex px-2 border-b border-black", `${!receiver ? "justify-between" : null}`)}>
+    <div
+      className={cn(
+        "w-full h-12 md:hidden bg-primary items-center flex px-2 border-b border-black",
+        `${!receiver ? "justify-between" : null}`
+      )}
+    >
       {receiver ? (
         <>
           <button
@@ -36,15 +41,15 @@ const TopBar = ({setOpenBlock, setOpenClearChat}:CurrentUserChatProps) => {
               />
             </svg>
           </button>
-          <CurrentUserChat     
-              setOpenBlock={setOpenBlock}
-              setOpenClearChat={setOpenClearChat}              
+          <CurrentUserChat
+            setOpenBlock={setOpenBlock}
+            setOpenClearChat={setOpenClearChat}
           />
         </>
       ) : (
         <>
           <UserButton />
-          <OptionsModal />
+          <OptionsModal setOpenUpdateProfile={setOpenUpdateProfile}/>
         </>
       )}
     </div>

@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 
 import useGetMessages from "@/Hooks/useGetMessages";
-import { MessageTypes } from "@/Types";
+import { MessageTypes, UserType } from "@/Types";
 import { useSelector } from "react-redux";
 import { RootState } from "@/Redux/store";
 import { socket } from "@/Pages";
-import { ErrorMessageModal, LoadingModal } from "./Modals";
+import { ErrorMessageModel, LoadingModel } from "./Models";
 import { CurrentUserChat, Message, SendBox } from ".";
 
 interface CurrentUserChatProps {
@@ -17,13 +17,13 @@ const Chat = ({ setOpenBlock, setOpenClearChat }: CurrentUserChatProps) => {
   const receiver = useSelector((state: RootState) => state.receiver.value);
   const authUser = useSelector((state: RootState) => state.authUser.value);
   const chatRef = useRef<HTMLDivElement>(null);
-  const [messages, setMessages] = useState<MessageTypes[]>([]);
+  const [messages, setMessages] = useState<MessageTypes<UserType | null>[]>([]);
 
   const {
     data: messagesFetched,
     isError,
     isLoading,
-    refetch
+    refetch,
   } = useGetMessages(authUser?._id as string, receiver?._id as string);
 
   // Effect for fetching messages when component mounts
@@ -33,7 +33,7 @@ const Chat = ({ setOpenBlock, setOpenClearChat }: CurrentUserChatProps) => {
 
   // Effect for listening to new messages via Socket.IO
   useEffect(() => {
-    const handleReceiveMessage = (newMessage: MessageTypes) => {
+    const handleReceiveMessage = (newMessage: MessageTypes<UserType | null>) => {
       setMessages((prevMessages) => [...prevMessages, newMessage]);
       refetch();
     };
@@ -60,18 +60,16 @@ const Chat = ({ setOpenBlock, setOpenClearChat }: CurrentUserChatProps) => {
       {
         /**Add loading and errors Ui later */
         isLoading ? (
-          <LoadingModal />
+          <LoadingModel />
         ) : isError ? (
-          <ErrorMessageModal />
+          <ErrorMessageModel />
         ) : (
           messages?.map((message) => {
-            const { receiver: messageReceiver, sender: messageSender } =
-              message;
+            const { receiver: messageReceiver, sender: messageSender } = message;
+            const userSet = new Set([receiver?.userId, authUser?.userId]);
             const isMessageInChatRoom =
-              (receiver?.userId === messageReceiver?.userId &&
-                authUser?.userId === messageSender?.userId) ||
-              (authUser?.userId === messageReceiver?.userId &&
-                receiver?.userId === messageSender?.userId);
+              userSet.has(messageReceiver?.userId) &&
+              userSet.has(messageSender?.userId);
 
             if (isMessageInChatRoom)
               return (

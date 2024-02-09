@@ -1,7 +1,7 @@
-export interface MessageTypes {
+export interface MessageTypes<userType> {
   _id?: string 
-  sender: UserType | null | string;
-  receiver: UserType | null | string;
+  sender: userType;
+  receiver: userType;
   isDeletedBySender?: boolean,
   isDeletedByReceiver?: boolean,
   content: string;
@@ -21,12 +21,12 @@ export interface UserType {
   username: string,
   email: string,
   profile: string,
-  messages: MessageTypes[],
+  messages: MessageTypes<UserType | null>[],
   notifications: Notification[],
 }
 
 
 export interface lastMessageType {
   friend: {_id: string, email: string};
-  lastMessage: MessageTypes
+  lastMessage: MessageTypes<string>
 }

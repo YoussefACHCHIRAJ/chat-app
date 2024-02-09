@@ -4,22 +4,23 @@ import { RootState } from "@/Redux/store";
 import { useEffect, useState } from "react";
 import { socket } from ".";
 import {
-  BlockChatModal,
-  ClearChatModal,
-  FriendListModal,
-} from "@/Components/Modals";
+  BlockChatModel,
+  ClearChatModel,
+  FriendListModel,
+  UpdateProfileModel,
+} from "@/Components/Models";
 
 const ChatPage = () => {
   /**States and hooks and variables declaration */
   const [openBlock, setOpenBlock] = useState(false);
   const [openClearChat, setOpenClearChat] = useState(false);
+  const [openUpdateProfile, setOpenUpdateProfile] = useState(false)
 
   const receiver = useSelector((state: RootState) => state.receiver.value);
   const authUser = useSelector((state: RootState) => state.authUser.value);
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
   /**End Declaration **/
 
-  
   useEffect(() => {
     socket.emit("log-in", authUser?.userId);
   }, [authUser?.userId]);
@@ -40,8 +41,8 @@ const ChatPage = () => {
     [];
   return (
     <main className="flex flex-col md:flex-row w-full h-full">
-      <TopBar setOpenBlock={setOpenBlock} setOpenClearChat={setOpenClearChat} />
-      <SideBar onlineUsers={onlineUsers} />
+      <TopBar setOpenBlock={setOpenBlock} setOpenClearChat={setOpenClearChat} setOpenUpdateProfile={setOpenUpdateProfile}/>
+      <SideBar onlineUsers={onlineUsers} setOpenUpdateProfile={setOpenUpdateProfile}/>
       {receiver ? (
         <>
           <Chat
@@ -57,7 +58,7 @@ const ChatPage = () => {
       ) : (
         <>
           <div className="block md:hidden">
-            <FriendListModal authUser={authUser} onlineUsers={onlineUsers} />
+            <FriendListModel authUser={authUser} onlineUsers={onlineUsers} />
           </div>
           <div className="hidden md:block mx-auto mt-10 px-4 text-gray-400">
             <svg
@@ -82,11 +83,12 @@ const ChatPage = () => {
         </>
       )}
 
-      <BlockChatModal openBlock={openBlock} setOpenBlock={setOpenBlock} />
-      <ClearChatModal
+      <BlockChatModel openBlock={openBlock} setOpenBlock={setOpenBlock} />
+      <ClearChatModel
         openClearChat={openClearChat}
         setOpenClearChat={setOpenClearChat}
       />
+      <UpdateProfileModel open={openUpdateProfile} setOpen={setOpenUpdateProfile}/>
     </main>
   );
 };

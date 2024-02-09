@@ -81,7 +81,7 @@ export const messages = [
 export const options = [
   {
     icon: "/user.svg",
-    label: 'Profile'
+    label: 'Modifier Profile',
   },
   {
     icon: "/settings.svg",

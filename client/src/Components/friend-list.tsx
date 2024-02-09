@@ -31,7 +31,6 @@ const FriendList = ({ onlineUsers, authUser }: FriendListProps) => {
     refetch: refetchNotifcations,
   } = useGetNotification();
   const { data: lastMessages, refetch: refetchLastMessages } = useGetLastMessages();
-  console.log({lastMessages});
 
   const { mutate: deleteNotification } = useDeleteNotification();
 

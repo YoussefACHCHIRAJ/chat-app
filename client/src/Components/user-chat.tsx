@@ -12,7 +12,7 @@ interface userChatType {
   closeModal?: React.Dispatch<React.SetStateAction<boolean>>;
   notification: NotificationType;
   refetchNotifications: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<unknown, unknown>>
-  lastMessage: MessageTypes
+  lastMessage: MessageTypes<string>
 }
 
 const UserChat = ({ closeModal, user, isOnline ,notification, refetchNotifications, lastMessage }: userChatType) => {

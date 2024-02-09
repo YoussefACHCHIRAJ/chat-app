@@ -10,12 +10,12 @@ import { Button } from "@/Components/ui/button";
 import { useSelector } from "react-redux";
 import { RootState } from "@/Redux/store";
 
-interface BlockChatModalProps {
+interface BlockChatModelProps {
   openBlock: boolean;
   setOpenBlock: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const BlockChatModal = ({  openBlock, setOpenBlock }: BlockChatModalProps) => {
+const BlockChatModel = ({  openBlock, setOpenBlock }: BlockChatModelProps) => {
   const receiver = useSelector((state: RootState) => state.receiver.value);
   return (
     <Dialog open={openBlock} onOpenChange={() => setOpenBlock(false)}>
@@ -50,4 +50,4 @@ const BlockChatModal = ({  openBlock, setOpenBlock }: BlockChatModalProps) => {
   );
 };
 
-export default BlockChatModal;
+export default BlockChatModel;

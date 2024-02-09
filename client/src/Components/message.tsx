@@ -1,8 +1,8 @@
-import { MessageTypes } from "@/Types";
+import { MessageTypes, UserType } from "@/Types";
 import { cn, humanTime } from "@/lib/utils";
 import { useClerk } from "@clerk/clerk-react";
 
-const Message = ({ message }: { message: MessageTypes }) => {
+const Message = ({ message }: { message: MessageTypes<UserType | null> }) => {
   const { user } = useClerk();
   const { sender, content, time } = message;
 

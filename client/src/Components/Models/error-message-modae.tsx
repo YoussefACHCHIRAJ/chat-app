@@ -1,4 +1,4 @@
-const ErrorMessageModal = () => {
+const ErrorMessageModel = () => {
   return (
     <div className="flex items-center justify-center flex-col h-full">
       <svg
@@ -24,4 +24,4 @@ const ErrorMessageModal = () => {
   );
 };
 
-export default ErrorMessageModal;
+export default ErrorMessageModel;

@@ -7,7 +7,7 @@ import { Paperclip } from "lucide-react";
 import Option from "../option";
 import { medaiOptions } from "@/Constants";
 
-const ShareMediaModal = () => {
+const ShareMediaModel = () => {
   return (
     <Popover>
       <PopoverTrigger>
@@ -24,4 +24,4 @@ const ShareMediaModal = () => {
   );
 };
 
-export default ShareMediaModal;
+export default ShareMediaModel;

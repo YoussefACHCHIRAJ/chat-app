@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Ban, Trash, X } from "lucide-react";
 import { UserType } from "@/Types";
 import { cn } from "@/lib/utils";
-import { ShareMediaModal } from "./Modals";
+import { ShareMediaModel } from "./Models";
 import { setReceiver } from "@/Redux/Receiver/receiverSlice";
 
 interface ReceiverInfoProps {
@@ -17,7 +17,7 @@ const ReceiverInfo = ({onlineUsers, setOpenBlock, setOpenClearChat}:ReceiverInfo
   const { profile, username, email } = receiver as UserType;
   const dispatch = useDispatch()
   return (
-    <section className="w-[18em] hidden  lg:flex flex-col bg-primary border-l border-gray-600 shadow-xl shadow-primary items-center pt-10">
+    <section className="w-[20em] hidden  lg:flex flex-col bg-primary border-l border-gray-600 shadow-xl shadow-primary items-center pt-10">
       <div className="w-20 relative">
         <img
           className="w-full rounded-full object-contain h-full"
@@ -34,7 +34,7 @@ const ReceiverInfo = ({onlineUsers, setOpenBlock, setOpenClearChat}:ReceiverInfo
       <p className="text-gray-300 text-xl mt-3">{username}</p>
       <p className="text-gray-400 text-lg mt-2">{email}</p>
       <div className="mt-6 text-white flex items-center justify-between space-x-10">
-        <ShareMediaModal />
+        <ShareMediaModel />
         <button>
           <Ban onClick={() => setOpenBlock(true)}/>
         </button>

@@ -1,10 +1,15 @@
-import { FriendListModal } from "@/Components/Modals";
+import { FriendListModel } from "@/Components/Models";
 import { UserButton } from "@clerk/clerk-react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/Redux/store";
-import OptionsModal from "./Modals/options-modal";
+import OptionsModal from "./Models/options-model";
 
-const SideBar = ({ onlineUsers }: { onlineUsers: string[] }) => {
+interface sideBarProps {
+  onlineUsers: string[];
+  setOpenUpdateProfile: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const SideBar = ({ onlineUsers,setOpenUpdateProfile }: sideBarProps) => {
   const authUser = useSelector((state: RootState) => state.authUser.value);
   return (
     <section className="max-w-[20em] hidden md:flex flex-col bg-primary border-r border-gray-600 shadow-xl shadow-primary">
@@ -16,9 +21,9 @@ const SideBar = ({ onlineUsers }: { onlineUsers: string[] }) => {
           </h3>
           <p className="font-light text-xs text-white">{authUser?.email}</p>
         </div>
-        <OptionsModal />
+        <OptionsModal setOpenUpdateProfile={setOpenUpdateProfile}/>
       </div>
-      <FriendListModal authUser={authUser} onlineUsers={onlineUsers} />
+      <FriendListModel authUser={authUser} onlineUsers={onlineUsers} />
     </section>
   );
 };
