@@ -7,10 +7,10 @@ const User = require("../../models/User");
 const saveUsersToDB = async userData => {
     const isUserExist = await User.findOne({ userId: userData.userId });
 
-    if (isUserExist) return isUserExist._id;
+    if (isUserExist) return;
 
-    const newUser = User.create(userData);
-    return newUser._id;
+    User.create(userData);
+    
 }
 const getUsers = async (req, res) => {
     try {
@@ -18,7 +18,7 @@ const getUsers = async (req, res) => {
 
         if (!usersList) res.json({ users: [] });
 
-        const usersListData = await Promise.all(usersList.map(async user => {
+        await Promise.all(usersList.map(async user => {
             const userData = {
                 userId: user.id,
                 username: `${user?.firstName} ${user?.lastName}`,
@@ -26,9 +26,12 @@ const getUsers = async (req, res) => {
                 profile: user?.imageUrl
         
             }
-            const newUserId = await saveUsersToDB(userData);
-            return {_id: newUserId, ...userData};
+
+            await saveUsersToDB(userData);
         }));
+
+        const usersListData = await User.find();
+        console.log({ users: usersListData })
         res.json({ users: usersListData });
     } catch (error) {
         console.log('[users]: ', error);
