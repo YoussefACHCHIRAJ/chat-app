@@ -4,17 +4,22 @@ const User = require("../../models/User");
 const Chat = require("../../models/Chat");
 
 const getLastMessages = async (req, res) => {
-
     try {
-        const authUser = new mongoose.Types.ObjectId(req.params.authUser);
+        const authUserParam = req.params.authUser;
+        const authUser = new mongoose.Types.ObjectId(authUserParam);
         const friends = await User.find({ _id: { $ne: authUser } }).select("_id, email");
 
         const lastMessages = await Promise.all(friends.map(async friend => {
 
             const chatId = [authUser, friend._id].sort().join("");
             const chat = await Chat.findOne({ chatId });
-
-            let lastMessage = await Message.findOne({ chat }).sort({ createdAt: -1 });
+            let lastMessage = await Message.findOne({
+                chat,
+                $or: [
+                    { sender: authUser, isDeletedBySender: false },
+                    { receiver: authUser, isDeletedByReceiver: false }
+                ]
+            }).sort({ createdAt: -1 });
             return {
                 friend: friend,
                 lastMessage

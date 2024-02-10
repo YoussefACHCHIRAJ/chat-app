@@ -64,7 +64,7 @@ module.exports = { app, runChatServer };
 [done] + Set notifications. 
 [done] + Convert a fetch requests to axios requests.
 [done] + Indicate the last message in the friends list.
-       + Update Username (and profile picture later)
+[done] + Update Username (and profile picture later)
        + Block a user.
        + Search for a user.
        + Manage contacts.
@@ -74,6 +74,6 @@ module.exports = { app, runChatServer };
 /* Bugs To Fix : 
    -----------------------------------------------------------
 
-       + message deleted from only one chat, not all the chats (To fix use the chat field)
-       + when the chat has been cleared, the last messages should also be cleared
+[Fixed] + message deleted from only one chat, not all the chats (To fix use the chat field)
+[Fixed] + when the chat has been cleared, the last messages should also be cleared
 */

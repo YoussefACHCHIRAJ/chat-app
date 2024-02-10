@@ -31,7 +31,6 @@ const getUsers = async (req, res) => {
         }));
 
         const usersListData = await User.find();
-        console.log({ users: usersListData })
         res.json({ users: usersListData });
     } catch (error) {
         console.log('[users]: ', error);

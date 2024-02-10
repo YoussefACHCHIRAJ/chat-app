@@ -31,7 +31,7 @@ const FriendList = ({ onlineUsers, authUser }: FriendListProps) => {
     refetch: refetchNotifcations,
   } = useGetNotification();
   const { data: lastMessages, refetch: refetchLastMessages } = useGetLastMessages();
-
+  console.log({lastMessages});
   const { mutate: deleteNotification } = useDeleteNotification();
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const FriendList = ({ onlineUsers, authUser }: FriendListProps) => {
     return () => {
       socket.off("refresh-notifications");
     };
-  }, [authUser?._id, deleteNotification, receiver?._id, refetchNotifcations]);
+  }, [authUser?._id, deleteNotification, receiver?._id, refetchLastMessages, refetchNotifcations]);
 
   if (isNotificationsLoading) {
     console.log("notifications loading ....");

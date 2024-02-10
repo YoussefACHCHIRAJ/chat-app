@@ -1,15 +1,21 @@
 const { default: mongoose } = require("mongoose");
 const Message = require("../../models/Message");
+const Chat = require("../../models/Chat");
 
 const getAll = async (req, res) => {
     try {
-        const authUser =  new mongoose.Types.ObjectId(req.params.authUser);
-        const recipient = new mongoose.Types.ObjectId(req.query.recipient);
-        
+        const authUserParam = req.params.authUser;
+        const receiverParam = req.query.receiver;
+        const authUser = new mongoose.Types.ObjectId(authUserParam);
+        const receiver = new mongoose.Types.ObjectId(receiverParam);
+        const chatId = [authUser, receiver].sort().join("");
+        const chat = await Chat.findOne({ chatId });
+
         const messages = await Message.find({
-            $or : [
-                {sender: authUser, receiver: recipient, isDeletedBySender: {$ne: true}},
-                {sender: recipient, receiver: authUser, isDeletedByReceiver: {$ne: true}}
+            chat,
+            $or: [
+                { sender: authUser, isDeletedBySender: false },
+                { receiver: authUser, isDeletedByReceiver: false }
             ]
         })
             .populate('sender')

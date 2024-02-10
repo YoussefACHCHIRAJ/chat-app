@@ -29,7 +29,6 @@ const ClearChatModel = ({
     clearConversation();
       setOpenClearChat(false);
       dispatch(setReceiver(null));
-    
   }
   return (
     <Dialog open={openClearChat} onOpenChange={() => setOpenClearChat(false)}>

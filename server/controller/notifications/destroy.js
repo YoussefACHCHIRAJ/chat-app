@@ -2,9 +2,9 @@ const { default: mongoose } = require("mongoose");
 const Notification = require("../../models/Notification");
 
 const deleteNotification = async (req, res) => {
-    const authUser = req.params.authUser;
-    const sender = req.query.sender;
     try {
+        const authUser = req.params.authUser;
+        const sender = req.query.sender;
         const authUserId = new mongoose.Types.ObjectId(authUser);
         const senderId = new mongoose.Types.ObjectId(sender);
         const deleteResult = await Notification.updateOne({

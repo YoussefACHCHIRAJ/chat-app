@@ -6,7 +6,7 @@ const useGetMessages = (loggedInUser: string, recipient: string) => {
     queryKey: ["messages", { loggedInUser }, { recipient }],
     queryFn: async () => {
       try {
-        const {data} = await axios(`http://localhost:8080/messages/${loggedInUser}?recipient=${recipient}`)
+        const {data} = await axios(`http://localhost:8080/messages/${loggedInUser}?receiver=${recipient}`)
         return data.messages;
       } catch (error) {
         throw new Error("failed to get messages");

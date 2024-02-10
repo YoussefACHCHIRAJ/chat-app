@@ -33,7 +33,9 @@ const Chat = ({ setOpenBlock, setOpenClearChat }: CurrentUserChatProps) => {
 
   // Effect for listening to new messages via Socket.IO
   useEffect(() => {
-    const handleReceiveMessage = (newMessage: MessageTypes<UserType | null>) => {
+    const handleReceiveMessage = (
+      newMessage: MessageTypes<UserType | null>
+    ) => {
       setMessages((prevMessages) => [...prevMessages, newMessage]);
       refetch();
     };
@@ -65,7 +67,8 @@ const Chat = ({ setOpenBlock, setOpenClearChat }: CurrentUserChatProps) => {
           <ErrorMessageModel />
         ) : (
           messages?.map((message) => {
-            const { receiver: messageReceiver, sender: messageSender } = message;
+            const { receiver: messageReceiver, sender: messageSender } =
+              message;
             const userSet = new Set([receiver?.userId, authUser?.userId]);
             const isMessageInChatRoom =
               userSet.has(messageReceiver?.userId) &&
