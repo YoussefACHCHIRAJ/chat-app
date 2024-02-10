@@ -1,4 +1,4 @@
-const { default: mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 const Message = require("../../models/Message");
 const User = require("../../models/User");
 const Chat = require("../../models/Chat");
@@ -7,7 +7,7 @@ const getLastMessages = async (req, res) => {
     try {
         const authUserParam = req.params.authUser;
         const authUser = new mongoose.Types.ObjectId(authUserParam);
-        const friends = await User.find({ _id: { $ne: authUser } }).select("_id, email");
+        const friends = await User.find({ _id: { $ne: authUser } }).select("_id");
 
         const lastMessages = await Promise.all(friends.map(async friend => {
 
@@ -29,7 +29,7 @@ const getLastMessages = async (req, res) => {
         res.status(200).json({ lastMessages });
     } catch (error) {
         console.error('Error getting all last messages:', error);
-        res.status(401).json({ error });
+        res.status(500).json({ error: "Failed to retrieve the last messages" });
     }
 }
 

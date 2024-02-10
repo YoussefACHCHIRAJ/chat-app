@@ -39,7 +39,7 @@ const UserChat = ({ closeModal, user, isOnline ,notification, refetchNotificatio
     <div
       onClick={handleSelectReceiver}
       className={cn(
-        `flex gap-2 md:px-3 px-2 py-2 mx-[.1em] md:mx-0 text-sm rounded-xl items-center justify-start cursor-pointer hover:bg-lightGray
+        `transition-all duration-200 flex gap-2 md:px-3 px-2 py-2 mx-[.1em] md:mx-0 text-sm rounded-xl items-center justify-start cursor-pointer hover:bg-lightGray max-w-full
           ${user.userId === receiver?.userId && "message-receiver"}
           ${isunread && "bg-lightGray"}
           `
@@ -66,11 +66,11 @@ const UserChat = ({ closeModal, user, isOnline ,notification, refetchNotificatio
         { lastMessage !== null && (<p className="text-gray-200 text-xs truncate w-48">
           {lastMessage?.sender !== authUser?._id && "Sent"} You: {lastMessage?.content}</p>)}
       </div>
-      {isunread && (
-        <p className="bg-green text-white font-bold rounded-full text-center w-5 h-5">
+      
+        <p className={`bg-green text-white font-bold rounded-full text-center w-5 h-5 transition-all duration-200 ${isunread ? "opacity-100" : "opacity-0"}`}>
           {notification?.count}
         </p>
-      )}
+      
     </div>
   );
 };

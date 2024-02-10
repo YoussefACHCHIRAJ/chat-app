@@ -23,8 +23,8 @@ const Chat = ({ setOpenBlock, setOpenClearChat }: CurrentUserChatProps) => {
     data: messagesFetched,
     isError,
     isLoading,
-    refetch,
-  } = useGetMessages(authUser?._id as string, receiver?._id as string);
+    refetch: reftechMessages
+  } = useGetMessages();
 
   // Effect for fetching messages when component mounts
   useEffect(() => {
@@ -33,19 +33,17 @@ const Chat = ({ setOpenBlock, setOpenClearChat }: CurrentUserChatProps) => {
 
   // Effect for listening to new messages via Socket.IO
   useEffect(() => {
-    const handleReceiveMessage = (
-      newMessage: MessageTypes<UserType | null>
-    ) => {
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-      refetch();
-    };
-
-    socket.on("receive-message", handleReceiveMessage);
-
+    
+    socket.on("receive-message", newMessage => {
+      setMessages(prevMessages => [...prevMessages, newMessage]);
+    });
+    socket.on("clear-chat", () => {
+      reftechMessages()
+    })
     return () => {
       socket.off("receive-message");
     };
-  }, [refetch]);
+  }, [messages]);
 
   // Effect for scrolling to the bottom when messages change
   useEffect(() => {
@@ -56,7 +54,7 @@ const Chat = ({ setOpenBlock, setOpenClearChat }: CurrentUserChatProps) => {
 
   const AllMessages = (
     <div
-      className="space-y-3 flex-1 relative py-4 px-4 overflow-y-auto scrollbar"
+      className="space-y-3 flex-1 relative py-4 px-4 overflow-y-auto scrollbar scroll-smooth"
       ref={chatRef}
     >
       {

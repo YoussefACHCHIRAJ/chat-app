@@ -1,5 +1,5 @@
 import { RootState } from "@/Redux/store";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useMutation } from "react-query";
 import { useSelector } from "react-redux";
 
@@ -12,7 +12,8 @@ const useClearConversation = () => {
         const {data} = await axios.delete(`http://localhost:8080/messages/${authUser?._id}?receiver=${receiver?._id}`)
         return data.deleted;
       } catch (error) {
-        throw new Error("Failed clear Conversation");
+        const axiosError = error as AxiosError;
+        throw new Error(`Failed clear Conversation: ${axiosError?.message}`);
       }
     }
   );

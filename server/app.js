@@ -36,6 +36,9 @@ const runChatServer = server => {
             await storeNotifications(sender, receiver);
             io.emit("refresh-notifications", sender);
         });
+        socket.on("chat-cleared", () => {
+            socket.emit("chat-cleared");
+        })
         socket.on('disconnect', () => {
             users.forEach((socketStored, userId) => {
                 if (socketStored === socket) {

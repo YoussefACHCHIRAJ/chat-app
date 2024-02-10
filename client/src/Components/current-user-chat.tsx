@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/Redux/store";
 import { setReceiver } from "@/Redux/Receiver/receiverSlice";
 import { ShareMediaModel } from "./Models";
+import { useEffect } from "react";
 
 interface CurrentUserChatProps {
   setOpenBlock: React.Dispatch<React.SetStateAction<boolean>>
@@ -13,6 +14,21 @@ const CurrentUserChat = ({setOpenBlock, setOpenClearChat}:CurrentUserChatProps) 
   
   const receiver = useSelector((state: RootState) => state.receiver.value)
   const dispatch = useDispatch();
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        dispatch(setReceiver(null));
+      }
+    };
+
+    // Attach the event listener
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [dispatch]);
   return (
     <div className="w-full  bg-primary px-0 py-2 flex lg:hidden gap-3 items-center">
       <div className="border rounded-full w-10 h-10 bg-black">

@@ -1,7 +1,7 @@
 import { setAuthUser } from "@/Redux/AuthUser/authUserSlice";
 import { UserType } from "@/Types";
 import { useClerk } from "@clerk/clerk-react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 // import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
@@ -24,7 +24,8 @@ const useGetUsers = () => {
         );
         return data.users;
       } catch (error) {
-        throw new Error("failed get users");
+        const axiosError = error as AxiosError;
+        throw new Error(`failed get users: ${axiosError?.message}`);
       }
     },
   });

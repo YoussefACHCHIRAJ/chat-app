@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useMutation } from "react-query";
 
 type NotificationParamsDataType = {
@@ -14,7 +14,8 @@ const useDeleteNotification = () => {
         const {data} = await axios.delete(`http://localhost:8080/notifications/${receiver}?sender=${sender}`)
         return data.deleteNotify;
       } catch (error) {
-        throw new Error("failed fetching notifications.");
+        const axiosError = error as AxiosError;
+        throw new Error(`failed fetching notifications: ${axiosError?.message}.`);
       }
     }
   );

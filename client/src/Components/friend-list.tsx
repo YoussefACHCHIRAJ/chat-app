@@ -31,7 +31,6 @@ const FriendList = ({ onlineUsers, authUser }: FriendListProps) => {
     refetch: refetchNotifcations,
   } = useGetNotification();
   const { data: lastMessages, refetch: refetchLastMessages } = useGetLastMessages();
-  console.log({lastMessages});
   const { mutate: deleteNotification } = useDeleteNotification();
 
   useEffect(() => {
@@ -49,6 +48,18 @@ const FriendList = ({ onlineUsers, authUser }: FriendListProps) => {
       socket.off("refresh-notifications");
     };
   }, [authUser?._id, deleteNotification, receiver?._id, refetchLastMessages, refetchNotifcations]);
+
+
+  useEffect(() => {
+    socket.on("chat-cleared", () => {
+      console.log("listen to the clearing chat");
+      refetchLastMessages();
+      console.log(lastMessages);
+    });
+    return () => {
+      socket.off("chat-cleared");
+    }
+  }, [refetchLastMessages, lastMessages])
 
   if (isNotificationsLoading) {
     console.log("notifications loading ....");

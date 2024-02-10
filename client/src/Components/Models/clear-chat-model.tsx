@@ -11,6 +11,7 @@ import useClearConversation from "@/Hooks/useClearConversation";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/Redux/store";
 import { setReceiver } from "@/Redux/Receiver/receiverSlice";
+import { socket } from "@/Pages";
 
 interface ClearChatModelProps {
   openClearChat: boolean;
@@ -27,6 +28,7 @@ const ClearChatModel = ({
 
   const clearChatConversation = () => {
     clearConversation();
+    socket.emit("chat-cleared");
       setOpenClearChat(false);
       dispatch(setReceiver(null));
   }

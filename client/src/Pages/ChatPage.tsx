@@ -23,6 +23,9 @@ const ChatPage = () => {
 
   useEffect(() => {
     socket.emit("log-in", authUser?.userId);
+    return () => {
+      socket.off("log-in");
+    }
   }, [authUser?.userId]);
 
   useEffect(() => {
@@ -37,8 +40,8 @@ const ChatPage = () => {
       socket.off("user-connect");
       socket.off("user-deconnect");
     };
-  }, []),
-    [];
+  }, []);
+  
   return (
     <main className="flex flex-col md:flex-row w-full h-full">
       <TopBar setOpenBlock={setOpenBlock} setOpenClearChat={setOpenClearChat} setOpenUpdateProfile={setOpenUpdateProfile}/>
