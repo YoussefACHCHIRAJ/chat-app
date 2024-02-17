@@ -4,11 +4,17 @@ const Chat = require("../../models/Chat");
 
 const getAll = async (req, res) => {
     try {
+       
         const authUserParam = req.params.authUser;
+       
         const receiverParam = req.query.receiver;
+       
         const authUser = new mongoose.Types.ObjectId(authUserParam);
+       
         const receiver = new mongoose.Types.ObjectId(receiverParam);
+       
         const chatId = [authUser, receiver].sort().join("");
+       
         const chat = await Chat.findOne({ chatId });
 
         const messages = await Message.find({

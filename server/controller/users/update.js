@@ -6,7 +6,7 @@ const update = async (req, res) => {
         const {username} = req.body;
         const authUserParam = req.params.authUserId;
         const _id = new mongoose.Types.ObjectId(authUserParam);
-        console.log({ username , _id});
+
         if (!username.trim()) {
             throw {
                 username: "username can not be empty"

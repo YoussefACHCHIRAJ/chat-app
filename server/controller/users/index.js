@@ -10,7 +10,7 @@ const saveUsersToDB = async userData => {
     if (isUserExist) return;
 
     User.create(userData);
-    
+
 }
 const getUsers = async (req, res) => {
     try {
@@ -19,12 +19,13 @@ const getUsers = async (req, res) => {
         if (!usersList) res.json({ users: [] });
 
         await Promise.all(usersList.map(async user => {
+      
             const userData = {
                 userId: user.id,
                 username: `${user?.firstName} ${user?.lastName}`,
                 email: user.emailAddresses[0].emailAddress,
                 profile: user?.imageUrl
-        
+
             }
 
             await saveUsersToDB(userData);
