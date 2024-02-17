@@ -23,15 +23,20 @@ const ClearChatModel = ({
   setOpenClearChat,
 }: ClearChatModelProps) => {
   const { mutate: clearConversation } = useClearConversation();
+
   const receiver = useSelector((state: RootState) => state.receiver.value);
+
   const dispatch = useDispatch();
 
   const clearChatConversation = () => {
     clearConversation();
+
     socket.emit("chat-cleared");
-      setOpenClearChat(false);
-      dispatch(setReceiver(null));
-  }
+
+    setOpenClearChat(false);
+
+    dispatch(setReceiver(null));
+  };
   return (
     <Dialog open={openClearChat} onOpenChange={() => setOpenClearChat(false)}>
       <DialogContent className="bg-primary text-white">
@@ -40,7 +45,7 @@ const ClearChatModel = ({
           <DialogDescription className="space-y-2 text-lightGray text-md">
             Are you sure you want clear the conversation with{" "}
             <span className="text-white font-semibold">
-             {receiver?.username}
+              {receiver?.username}
             </span>{" "}
             ?
           </DialogDescription>

@@ -19,7 +19,7 @@ const UpdateProfileModel = ({  open, setOpen }: ChatModelProps) => {
         <DialogHeader>
           <DialogTitle>Update Your username</DialogTitle>
           <DialogDescription className="space-y-2 text-lightGray text-md">
-            <UpdateUserNameInputModel />
+            <UpdateUserNameInputModel setOpen={setOpen}/>
           </DialogDescription>
         </DialogHeader>
         

@@ -16,9 +16,13 @@ interface userChatType {
 }
 
 const UserChat = ({ closeModal, user, isOnline ,notification, refetchNotifications, lastMessage }: userChatType) => {
+ 
   const dispatch = useDispatch();
+ 
   const receiver = useSelector((state: RootState) => state.receiver.value);
+ 
   const authUser = useSelector((state: RootState) => state.authUser.value);
+ 
   const { mutate: deleteNotification } = useDeleteNotification();
 
   const isunread =

@@ -22,7 +22,11 @@ const useGetUsers = () => {
             data.users.find((user: UserType) => user.userId === authUser?.id)
           )
         );
-        return data.users;
+        // exclude the auth user from the list
+        const users = data?.users?.filter(
+          (user: UserType) => user.userId !== authUser?.id
+        );
+        return users;
       } catch (error) {
         const axiosError = error as AxiosError;
         throw new Error(`failed get users: ${axiosError?.message}`);

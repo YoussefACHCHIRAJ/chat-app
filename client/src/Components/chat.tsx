@@ -23,7 +23,6 @@ const Chat = ({ setOpenBlock, setOpenClearChat }: CurrentUserChatProps) => {
     data: messagesFetched,
     isError,
     isLoading,
-    refetch: reftechMessages
   } = useGetMessages();
 
   // Effect for fetching messages when component mounts
@@ -37,9 +36,6 @@ const Chat = ({ setOpenBlock, setOpenClearChat }: CurrentUserChatProps) => {
     socket.on("receive-message", newMessage => {
       setMessages(prevMessages => [...prevMessages, newMessage]);
     });
-    socket.on("clear-chat", () => {
-      reftechMessages()
-    })
     return () => {
       socket.off("receive-message");
     };

@@ -17,6 +17,7 @@ interface FriendListProps {
 
 const FriendList = ({ onlineUsers, authUser }: FriendListProps) => {
   const receiver = useSelector((state: RootState) => state.receiver.value);
+
   const {
     data: users,
     isLoading: isUsersLoading,
@@ -30,7 +31,10 @@ const FriendList = ({ onlineUsers, authUser }: FriendListProps) => {
     isLoading: isNotificationsLoading,
     refetch: refetchNotifcations,
   } = useGetNotification();
-  const { data: lastMessages, refetch: refetchLastMessages } = useGetLastMessages();
+
+  const { data: lastMessages, refetch: refetchLastMessages } =
+    useGetLastMessages();
+
   const { mutate: deleteNotification } = useDeleteNotification();
 
   useEffect(() => {
@@ -47,8 +51,13 @@ const FriendList = ({ onlineUsers, authUser }: FriendListProps) => {
     return () => {
       socket.off("refresh-notifications");
     };
-  }, [authUser?._id, deleteNotification, receiver?._id, refetchLastMessages, refetchNotifcations]);
-
+  }, [
+    authUser?._id,
+    deleteNotification,
+    receiver?._id,
+    refetchLastMessages,
+    refetchNotifcations,
+  ]);
 
   useEffect(() => {
     socket.on("chat-cleared", () => {
@@ -58,8 +67,8 @@ const FriendList = ({ onlineUsers, authUser }: FriendListProps) => {
     });
     return () => {
       socket.off("chat-cleared");
-    }
-  }, [refetchLastMessages, lastMessages])
+    };
+  }, [refetchLastMessages, lastMessages]);
 
   if (isNotificationsLoading) {
     console.log("notifications loading ....");
@@ -80,14 +89,17 @@ const FriendList = ({ onlineUsers, authUser }: FriendListProps) => {
       ) : users?.length > 0 ? (
         users?.map((user: UserType) => {
           const isOnline = onlineUsers.includes(user?.userId as string);
+
           const notification = notifications?.find(
             (notification: NotificationType) =>
               user?._id === notification?.sender
           );
+
           const lastMessage = lastMessages?.find(
-            (lastMessage: lastMessageType) => (lastMessage.friend._id === user?._id)
+            (lastMessage: lastMessageType) =>
+              lastMessage?.friend?._id === user?._id
           );
-          if (user.userId !== authUser?.userId)
+
             return (
               <UserChat
                 key={user.userId}
